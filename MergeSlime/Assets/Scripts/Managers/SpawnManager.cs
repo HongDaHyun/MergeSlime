@@ -57,8 +57,8 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         Transform starTrans = PoolManager.Instance.GetFromPool<Transform>("Star");
 
-        float x = Random.Range(camBound.Left + 1, camBound.Right - 1);
-        float y = Random.Range(camBound.Bottom + 1, camBound.Top - 1);
+        float x = camBound.RanWidthBoundary();
+        float y = camBound.RanHeightBoudnary();
         float scale = Random.Range(0.1f, 0.5f);
 
         starTrans.position = new Vector2(x, y);
@@ -86,6 +86,18 @@ public class SpawnManager : Singleton<SpawnManager>
         StartCoroutine(StarSpawnRoutine());
     }
     #endregion
+
+    #region Slime
+    public Slime SpawnSlime(int level, Vector2 vec2)
+    {
+        Slime slime = PoolManager.Instance.GetFromPool<Slime>("Slime");
+
+        slime.transform.position = vec2;
+        slime.SetSlime(level);
+
+        return slime;
+    }
+    #endregion
 }
 
 public class CameraBound
@@ -101,6 +113,16 @@ public class CameraBound
 
         size_y = camera.orthographicSize;
         size_x = camera.orthographicSize * Screen.width / Screen.height;
+    }
+
+    public float RanWidthBoundary()
+    {
+        return Random.Range(Left + 1, Right - 1);
+    }
+
+    public float RanHeightBoudnary()
+    {
+        return Random.Range(Bottom + 1, Top - 1);
     }
 
     public float Bottom
