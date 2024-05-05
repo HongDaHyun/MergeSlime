@@ -1305,6 +1305,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 0}
     _nonLazy: 0
+  - _name: VFX_Pop
+    _component: {fileID: 6541315193099643178, guid: 2085dbd1e8d34274e85070027ff207f0, type: 3}
+    _count: 0
+    _container: {fileID: 0}
+    _nonLazy: 0
 --- !u!1 &1447283763
 GameObject:
   m_ObjectHideFlags: 0

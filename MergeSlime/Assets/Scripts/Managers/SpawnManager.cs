@@ -94,8 +94,27 @@ public class SpawnManager : Singleton<SpawnManager>
 
         slime.transform.position = vec2;
         slime.SetSlime(level);
+        SpawnPop(slime.transform);
 
         return slime;
+    }
+    #endregion
+
+    #region VFX
+    public VFX_Pop SpawnPop(Transform parent)
+    {
+        VFX_Pop pop = PoolManager.Instance.GetFromPool<VFX_Pop>("VFX_Pop");
+
+        pop.transform.position = parent.transform.position;
+        Vector3 scale = parent.transform.localScale;
+        pop.transform.localScale = new Vector3(scale.x + 0.3f, scale.y + 0.3f, scale.z + 0.3f);
+
+        return pop;
+    }
+
+    public void DeSpawnPop(VFX_Pop pop)
+    {
+        PoolManager.Instance.TakeToPool<VFX_Pop>("VFX_Pop", pop);
     }
     #endregion
 }
