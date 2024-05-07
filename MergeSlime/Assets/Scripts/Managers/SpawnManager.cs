@@ -7,6 +7,7 @@ using Redcode.Pools;
 public class SpawnManager : Singleton<SpawnManager>
 {
     public CameraBound camBound;
+    public Transform border_L, border_R, border_T, border_B;
 
     protected override void Awake()
     {
@@ -14,6 +15,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         camBound = new CameraBound();
         camBound.SetCameraBound();
+        SetBorder();
     }
 
     private void Start()
@@ -21,6 +23,23 @@ public class SpawnManager : Singleton<SpawnManager>
         StartCoroutine(CloudSpawnRoutine());
         StartCoroutine(StarSpawnRoutine());
     }
+
+    #region ¸Ê
+    public void SetBorder()
+    {
+        // ¿Ü°û¼± Å©±â ¼³Á¤
+        border_L.localScale = new Vector3(5, camBound.Height + 5, 1);
+        border_R.localScale = new Vector3(5, camBound.Height + 5, 1);
+        border_T.localScale = new Vector3(camBound.Width + 5, 5, 1);
+        border_B.localScale = new Vector3(camBound.Width + 5, 5, 1);
+
+        // ¿Ü°û¼± À§Ä¡ ¼³Á¤
+        border_L.position = new Vector3(camBound.Left - border_L.localScale.x / 2f, 0, 0);
+        border_R.position = new Vector3(camBound.Right + border_R.localScale.x / 2f, 0, 0);
+        border_T.position = new Vector3(0, camBound.Top + border_T.localScale.y / 2f, 0);
+        border_B.position = new Vector3(0, camBound.Bottom - border_B.localScale.y / 2f, 0);
+    }
+    #endregion
 
     #region Cloud
     private void SpawnCloud()
@@ -121,8 +140,6 @@ public class SpawnManager : Singleton<SpawnManager>
 
 public class CameraBound
 {
-    public RectTransform BGCanvasRect;
-
     private Camera camera;
     private float size_x, size_y;
 

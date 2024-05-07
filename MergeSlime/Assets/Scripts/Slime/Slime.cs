@@ -8,11 +8,10 @@ public class Slime : MonoBehaviour, IPoolObject
 {
     public SpriteRenderer shadow, body, face;
     public int level;
+    public State state;
 
     private SpawnManager spawnManager;
     private DataManager dataManager;
-
-    private State state;
 
     public void OnCreatedInPool()
     {
@@ -42,26 +41,7 @@ public class Slime : MonoBehaviour, IPoolObject
         switch(state)
         {
             case State.Idle:
-                Move();
-                StartCoroutine(Spin());
                 break;
-        }
-    }
-
-    private void Move()
-    {
-        Vector2 target = new Vector2(spawnManager.camBound.RanWidthBoundary(), spawnManager.camBound.RanHeightBoudnary());
-        float timeToReachTarget = Vector3.Distance(transform.position, target) / 0.3f;
-
-        transform.DOMove(target, timeToReachTarget).SetEase(Ease.Linear).SetUpdate(true).OnComplete(() => Move());
-    }
-
-    private IEnumerator Spin()
-    {
-        while (state == State.Idle)
-        {
-            body.transform.Rotate(Vector3.forward * 50f * Time.deltaTime);
-            yield return new WaitForEndOfFrame();
         }
     }
 }
