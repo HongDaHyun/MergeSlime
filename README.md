@@ -18,4 +18,8 @@
 <h3>[Test 0.3]</h3>
 - 슬라임 움직임 물리 적용<br/>
 - 외곽선 생성<br/>
+
+<h3>[Test 0.4]</h3>
+- 드래그 기능 구현<br/>
+- 충돌 처리 Trigger -> Collision<br/>
 </details>

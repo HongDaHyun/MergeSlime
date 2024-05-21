@@ -10,11 +10,15 @@ public class Slime : MonoBehaviour, IPoolObject
     public int level;
     public State state;
 
-    private SpawnManager spawnManager;
-    private DataManager dataManager;
+    [HideInInspector] public Rigidbody2D rigid;
+    [HideInInspector] public CircleCollider2D col;
+    [HideInInspector] public SpawnManager spawnManager;
+    [HideInInspector] public DataManager dataManager;
 
     public void OnCreatedInPool()
     {
+        rigid = GetComponent<Rigidbody2D>();
+        col = GetComponentInChildren<CircleCollider2D>();
         spawnManager = SpawnManager.Instance;
         dataManager = DataManager.Instance;
     }
@@ -34,13 +38,19 @@ public class Slime : MonoBehaviour, IPoolObject
         face.sprite = slimeSprite.faceSprites[1];
     }
 
-    private void SetState(State _state)
+    public void SetState(State _state)
     {
         state = _state;
 
         switch(state)
         {
             case State.Idle:
+                rigid.simulated = true;
+                break;
+            case State.Pick:
+                rigid.simulated = false;
+                break;
+            case State.Merge:
                 break;
         }
     }
