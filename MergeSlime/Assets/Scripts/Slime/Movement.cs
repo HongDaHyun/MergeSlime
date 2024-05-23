@@ -5,8 +5,8 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     public float moveSpeed;
-    public State state;
     private Vector2 moveDir;
+    [HideInInspector] public bool isDrop;
 
     private Slime slime;
 
@@ -15,45 +15,44 @@ public class Movement : MonoBehaviour
         slime = GetComponent<Slime>();
     }
 
-    private void Start()
+    public void ReSet()
     {
         moveDir = Random.insideUnitCircle.normalized;
+        isDrop = false;
     }
 
-    private void FixedUpdate()
+    public void Move()
     {
-        if(slime.state == State.Idle)
-        {
-            // 회전
-            slime.body.transform.Rotate(Vector3.forward * 50f * Time.fixedDeltaTime);
+        // 회전
+        slime.body.transform.Rotate(Vector3.forward * 50f * Time.fixedDeltaTime);
 
-            slime.rigid.MovePosition(slime.rigid.position + moveDir * moveSpeed * Time.fixedDeltaTime);
-        }
+        slime.rigid.MovePosition(slime.rigid.position + moveDir * moveSpeed * Time.fixedDeltaTime);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void MoveReflect(Collision2D collision)
     {
         Vector2 reflectNormal = collision.collider.ClosestPoint(slime.rigid.position) - slime.rigid.position;
         moveDir = Vector2.Reflect(moveDir, reflectNormal.normalized);
     }
 
-    private void OnMouseDown()
+    public IEnumerator DropRoutine()
     {
-        slime.SetState(State.Pick);
+        isDrop = true;
+        yield return new WaitForSeconds(0.1f);
+        isDrop = false;
     }
 
-    private void OnMouseDrag()
+    public void Merge(Slime otherSlime)
     {
-        Drag();
+        Debug.Log("머지");
+        slime.SetState(State.Merge);
+        otherSlime.SetState(State.Merge);
+
+        slime.spawnManager.DeSpawnSlime(otherSlime);
+        slime.SetSlime(++slime.level);
     }
 
-    private void OnMouseUp()
-    {
-        // 수정 필요 (머지)
-        slime.SetState(State.Idle);
-    }
-
-    private void Drag()
+    public void Drag()
     {
         if(slime.state == State.Pick)
         {

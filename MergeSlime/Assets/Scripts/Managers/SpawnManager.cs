@@ -117,6 +117,11 @@ public class SpawnManager : Singleton<SpawnManager>
 
         return slime;
     }
+
+    public void DeSpawnSlime(Slime slime)
+    {
+        PoolManager.Instance.TakeToPool<Slime>(slime);
+    }
     #endregion
 
     #region VFX
