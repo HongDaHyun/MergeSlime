@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Redcode.Pools;
+using TMPro;
 
 public class SpawnManager : Singleton<SpawnManager>
 {
@@ -139,6 +140,29 @@ public class SpawnManager : Singleton<SpawnManager>
     public void DeSpawnPop(VFX_Pop pop)
     {
         PoolManager.Instance.TakeToPool<VFX_Pop>("VFX_Pop", pop);
+    }
+
+    public void SpawnMoneyTxt(Transform parent, int amount)
+    {
+        TextMeshPro text = PoolManager.Instance.GetFromPool<TextMeshPro>("MoneyTxt");
+
+        // 초기 설정
+        text.text = $"+ <sprite=0>{amount}";
+        text.transform.position = parent.position;
+        Vector3 scale = parent.transform.localScale;
+        text.transform.localScale = new Vector3(scale.x + 0.3f, scale.y + 0.3f, scale.z + 0.3f);
+        text.color = Vector4.one;
+
+        // 닷트윈
+        Sequence textSeq = DOTween.Sequence().SetUpdate(true)
+            .Append(text.transform.DOMoveY(text.transform.position.y + 1f, 0.5f))
+            .Join(text.DOFade(0f, 0.5f))
+            .OnComplete(() => DeSpawnMoneyTxt(text));
+    }
+
+    public void DeSpawnMoneyTxt(TextMeshPro text)
+    {
+        PoolManager.Instance.TakeToPool<TextMeshPro>("MoneyTxt", text);
     }
     #endregion
 }

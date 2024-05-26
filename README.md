@@ -26,4 +26,12 @@
 <h3>[Test 0.4.2]</h3>
 - 기본 머지 체크<br/>
 - 코드 캡슐화 (최적화)<br/>
+
+<h3>[Test 0.4.3]</h3>
+<img src="https://github.com/HongDaHyun/MergeSlime/assets/101586627/86221272-82aa-43aa-97d9-ab0bba9a5e46" width="360" alt="Test 0.4.3">
+<br/>
+- 슬라임 레벨 크기<br/>
+- VFX (머지 -> 팝, 돈텍스트 -> 팝업)<br/>
+- 돈(코인)<br/>
+- 마이닝 기능<br/>
 </details>

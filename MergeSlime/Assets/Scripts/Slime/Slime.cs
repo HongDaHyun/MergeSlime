@@ -16,6 +16,7 @@ public class Slime : MonoBehaviour, IPoolObject
     [HideInInspector] public DataManager dataManager;
 
     private Movement movement;
+    private Mining mining;
 
     public void OnCreatedInPool()
     {
@@ -24,6 +25,7 @@ public class Slime : MonoBehaviour, IPoolObject
         spawnManager = SpawnManager.Instance;
         dataManager = DataManager.Instance;
         movement = GetComponent<Movement>();
+        mining = GetComponent<Mining>();
     }
 
     public void OnGettingFromPool()
@@ -34,6 +36,7 @@ public class Slime : MonoBehaviour, IPoolObject
     {
         SetState(State.Idle);
         movement.ReSet();
+        mining.ReSet();
     }
 
     private void FixedUpdate()
@@ -78,6 +81,9 @@ public class Slime : MonoBehaviour, IPoolObject
 
         body.sprite = slimeSprite.bodySprite;
         face.sprite = slimeSprite.faceSprites[1];
+
+        float scale = 0.3f * (level + 1);
+        transform.localScale = new Vector3(scale, scale, scale);
 
         ReSet();
     }

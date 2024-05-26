@@ -44,11 +44,14 @@ public class Movement : MonoBehaviour
 
     public void Merge(Slime otherSlime)
     {
-        Debug.Log("머지");
+        if (otherSlime.level != slime.level)
+            return;
+
         slime.SetState(State.Merge);
         otherSlime.SetState(State.Merge);
 
         slime.spawnManager.DeSpawnSlime(otherSlime);
+        slime.spawnManager.SpawnPop(slime.body.transform);
         slime.SetSlime(++slime.level);
     }
 
