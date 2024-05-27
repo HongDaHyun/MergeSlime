@@ -156,7 +156,7 @@ public class SpawnManager : Singleton<SpawnManager>
         // ´åÆ®À©
         Sequence textSeq = DOTween.Sequence().SetUpdate(true)
             .Append(text.transform.DOMoveY(text.transform.position.y + 1f, 0.5f))
-            .Join(text.DOFade(0f, 0.5f))
+            .Append(text.DOFade(0.5f, 0.5f))
             .OnComplete(() => DeSpawnMoneyTxt(text));
     }
 

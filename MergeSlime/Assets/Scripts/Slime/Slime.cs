@@ -16,7 +16,7 @@ public class Slime : MonoBehaviour, IPoolObject
     [HideInInspector] public DataManager dataManager;
 
     private Movement movement;
-    private Mining mining;
+    [HideInInspector] public Mining mining;
 
     public void OnCreatedInPool()
     {
@@ -75,14 +75,15 @@ public class Slime : MonoBehaviour, IPoolObject
 
     public void SetSlime(int _level)
     {
+        // 1 ~ 16 레벨의 슬라임 예정
         level = _level;
 
-        SlimeSprite slimeSprite = dataManager.slimeSprites[level];
+        SlimeSprite slimeSprite = dataManager.slimeSprites[level - 1];
 
         body.sprite = slimeSprite.bodySprite;
         face.sprite = slimeSprite.faceSprites[1];
 
-        float scale = 0.3f * (level + 1);
+        float scale = 0.3f * level;
         transform.localScale = new Vector3(scale, scale, scale);
 
         ReSet();

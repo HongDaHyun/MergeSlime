@@ -53,6 +53,9 @@ public class Movement : MonoBehaviour
         slime.spawnManager.DeSpawnSlime(otherSlime);
         slime.spawnManager.SpawnPop(slime.body.transform);
         slime.SetSlime(++slime.level);
+
+        slime.dataManager.coin.GainCoin(slime.mining.miningAmount);
+        slime.spawnManager.SpawnMoneyTxt(slime.body.transform, slime.mining.miningAmount);
     }
 
     public void Drag()

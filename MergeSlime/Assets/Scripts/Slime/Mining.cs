@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Mining : MonoBehaviour
 {
-    private const int MAXMINE = 16;
-    private int maxMining;
+    private float maxMiningT;
+    [HideInInspector] public int miningAmount;
 
     private Slime slime;
 
@@ -16,7 +16,8 @@ public class Mining : MonoBehaviour
 
     public void ReSet()
     {
-        maxMining = MAXMINE - slime.level;
+        maxMiningT = slime.dataManager.MAX_MINING - (slime.dataManager.MAX_MINING / slime.dataManager.SLIME_LENGTH * (slime.level - 1));
+        miningAmount = (int)Mathf.Pow(slime.level, 2);
 
         StopAllCoroutines();
         StartCoroutine(MiningRoutine());
@@ -24,14 +25,11 @@ public class Mining : MonoBehaviour
 
     private IEnumerator MiningRoutine()
     {
-        while(true)
-        {
-            yield return new WaitForSeconds(maxMining);
+        yield return new WaitForSeconds(maxMiningT);
 
-            int amount = slime.level + 1;
+        slime.dataManager.coin.GainCoin(miningAmount);
+        slime.spawnManager.SpawnMoneyTxt(slime.body.transform, miningAmount);
 
-            slime.dataManager.coin.GainCoin(amount);
-            slime.spawnManager.SpawnMoneyTxt(slime.body.transform, amount);
-        }
+        StartCoroutine(MiningRoutine());
     }
 }
