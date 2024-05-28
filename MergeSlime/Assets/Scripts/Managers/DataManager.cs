@@ -15,6 +15,7 @@ public class DataManager : Singleton<DataManager>
 
     [Title("중복 변수", "중복되어 처리될 수 있는 변수를 처리함.")]
     public int SLIME_LENGTH;
+    public float SLIME_SCALE;
 
     [Title("스프라이트")]
     public SlimeSprite[] slimeSprites;

@@ -83,7 +83,7 @@ public class Slime : MonoBehaviour, IPoolObject
         body.sprite = slimeSprite.bodySprite;
         face.sprite = slimeSprite.faceSprites[1];
 
-        float scale = 0.3f * level;
+        float scale = dataManager.SLIME_SCALE + ((level - 1) * 0.1f);
         transform.localScale = new Vector3(scale, scale, scale);
 
         ReSet();

@@ -1646,6 +1646,7 @@ MonoBehaviour:
   spawnPrice: 1
   MAX_MINING: 5
   SLIME_LENGTH: 0
+  SLIME_SCALE: 0.3
   slimeSprites:
   - bodySprite: {fileID: 21300000, guid: 662231d4e8e22a14b9ddbbf68367fdd0, type: 3}
     faceSprites:
@@ -1687,6 +1688,46 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 0221da0d8ce7d9a4184644bf56a7f70d, type: 3}
     - {fileID: 21300000, guid: 21035a981d860fe4a836b482dcdd648d, type: 3}
     - {fileID: 21300000, guid: 7bb2749e20e24ec4eb1d58c65f902644, type: 3}
+  - bodySprite: {fileID: 21300000, guid: 8d5fb795c67367a4cbffacb8780e7872, type: 3}
+    faceSprites:
+    - {fileID: 21300000, guid: a7250cabb2be7894cb60b11334d300f7, type: 3}
+    - {fileID: 21300000, guid: 1ee9cb168d2b6024d84f9869703dda44, type: 3}
+    - {fileID: 21300000, guid: 9a68c0241bc07bb46a64b386aebafe25, type: 3}
+  - bodySprite: {fileID: 21300000, guid: 768eaf46e7b125546b31900d3c7fbf6a, type: 3}
+    faceSprites:
+    - {fileID: 21300000, guid: fdcb605202bba3c499afd52fb3b6c039, type: 3}
+    - {fileID: 21300000, guid: 81cd295412c437d41bc245158d3fdd1f, type: 3}
+    - {fileID: 21300000, guid: fe7cb06df7c7d2e44901f3629caf545f, type: 3}
+  - bodySprite: {fileID: 21300000, guid: 5b10be6f157fa0243b28aa0c146871bc, type: 3}
+    faceSprites:
+    - {fileID: 21300000, guid: 0e3649de56e28354384b201c3e036b31, type: 3}
+    - {fileID: 21300000, guid: ccf99340fd6ca0342aef22749d1e6416, type: 3}
+    - {fileID: 21300000, guid: 7f5cdf202bc707d4fa2cf1085a947d09, type: 3}
+  - bodySprite: {fileID: 21300000, guid: 784576cca35c50846b8dfb472ad8da46, type: 3}
+    faceSprites:
+    - {fileID: 21300000, guid: 6c52d0538cd75d343b1e34134d3d9b09, type: 3}
+    - {fileID: 21300000, guid: e95a85a4656bebe4f81a6fc569cf50ab, type: 3}
+    - {fileID: 21300000, guid: f4a9a31c51b74944c947713d2f24ab73, type: 3}
+  - bodySprite: {fileID: 21300000, guid: 82f11a4e2831d13479cff9c90ac06d09, type: 3}
+    faceSprites:
+    - {fileID: 21300000, guid: a5a6fe638651690459ecc28c1f2f21a7, type: 3}
+    - {fileID: 21300000, guid: 458775ee48ea41540ae49945f8e155b5, type: 3}
+    - {fileID: 21300000, guid: fe4bca0d97fd30349a58d971b33c1f8b, type: 3}
+  - bodySprite: {fileID: 21300000, guid: 13dc37e6a37a7e8409de82b5d6189084, type: 3}
+    faceSprites:
+    - {fileID: 21300000, guid: 993f8093adb23724a909b733bbb5880d, type: 3}
+    - {fileID: 21300000, guid: f16f2f7bd6ee7e743a09e9a289d89e78, type: 3}
+    - {fileID: 21300000, guid: 1dffc82ea84c87a4d84e4849555e4fb6, type: 3}
+  - bodySprite: {fileID: 21300000, guid: 7680c3e944fee114bb3f4d05debd4e1f, type: 3}
+    faceSprites:
+    - {fileID: 21300000, guid: 5b9942ed245cfca4fa062dc8a1706ba3, type: 3}
+    - {fileID: 21300000, guid: b678d8ede7b6ea948a21a8fe8dcf26e3, type: 3}
+    - {fileID: 21300000, guid: 241d5fd07ea535b4b838156cb3161b30, type: 3}
+  - bodySprite: {fileID: 21300000, guid: 786b14457760c024ba34170ed1109f3f, type: 3}
+    faceSprites:
+    - {fileID: 21300000, guid: 0c92b42e943bbfc42ad30fc152a33f6c, type: 3}
+    - {fileID: 21300000, guid: 64e211c7a5db1754cad6186f660e152c, type: 3}
+    - {fileID: 21300000, guid: 2286fc9c084bb3b4f9878d774c2635b9, type: 3}
 --- !u!1 &681013413
 GameObject:
   m_ObjectHideFlags: 0
