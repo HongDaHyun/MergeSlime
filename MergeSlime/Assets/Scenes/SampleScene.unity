@@ -155,9 +155,8 @@ Transform:
   - {fileID: 1363651580}
   - {fileID: 267622732}
   - {fileID: 1227192564}
-  - {fileID: 672415974}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &54936647
 GameObject:
@@ -527,13 +526,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 194664380}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &200112107
 GameObject:
@@ -835,7 +834,7 @@ RectTransform:
   m_Children:
   - {fileID: 189223854}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -988,10 +987,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
+  m_fontSize: 72
   m_fontSizeBase: 70
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -1439,7 +1438,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &484616789
 GameObject:
@@ -1973,13 +1972,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 672415973}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 30999629}
-  m_RootOrder: 4
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &672415975
 MonoBehaviour:
@@ -1998,27 +1997,21 @@ MonoBehaviour:
   spawnPrice: 1
   upgradeLv:
   - level: 0
-    cost: 0
+    levelLimit: 80
+    cost: 1
     amount: 0
+    amountIncrease: 0.01
   MINING_CYCLE: 5
-  SPECIAL_INCREASE: 0.01
-  SPECIAL_INCREASE_LIMIT: 80
   SLIME_LENGTH: 0
   SLIME_S_LENGTH: 0
-  LUCK_PERCENT: 0
   SLIME_SCALE: 0.3
   slimeSprites:
   - bodySprite: {fileID: 21300000, guid: 662231d4e8e22a14b9ddbbf68367fdd0, type: 3}
     faceSprites:
-    - {fileID: 21300000, guid: 4f80fa4432bc2cc438c9a004822e80f8, type: 3}
-    - {fileID: 21300000, guid: 0f54b95e24f3c0b41a92075fcc1b810d, type: 3}
-    - {fileID: 21300000, guid: 0a63f159a5651c04db7b8a117594d4f1, type: 3}
-  - bodySprite: {fileID: 21300000, guid: 165fc2220df9f9142a1e29250e8d55e9, type: 3}
-    faceSprites:
     - {fileID: 21300000, guid: d5bdaefba57f4e041b419876c8ff06a3, type: 3}
     - {fileID: 21300000, guid: b82fa917dc30cf244bf4edd77a5b9dea, type: 3}
     - {fileID: 21300000, guid: 9a05479090b428246a1e156f76a01bfc, type: 3}
-  - bodySprite: {fileID: 21300000, guid: e2711349ccc5c88478ca8ac367023ef4, type: 3}
+  - bodySprite: {fileID: 21300000, guid: 165fc2220df9f9142a1e29250e8d55e9, type: 3}
     faceSprites:
     - {fileID: 21300000, guid: 57c3b4aabac164b45a3893e79a5ca03a, type: 3}
     - {fileID: 21300000, guid: 28f4bc22ff128ac47b530dcfd3ad0f51, type: 3}
@@ -2048,6 +2041,11 @@ MonoBehaviour:
     - {fileID: 21300000, guid: 0221da0d8ce7d9a4184644bf56a7f70d, type: 3}
     - {fileID: 21300000, guid: 21035a981d860fe4a836b482dcdd648d, type: 3}
     - {fileID: 21300000, guid: 7bb2749e20e24ec4eb1d58c65f902644, type: 3}
+  - bodySprite: {fileID: 21300000, guid: e3198d98716886743864ea112419230a, type: 3}
+    faceSprites:
+    - {fileID: 21300000, guid: 6fffa381836658247816fa40b2e39602, type: 3}
+    - {fileID: 21300000, guid: dbbab3f97627bd64b8a0b2fecbf171ff, type: 3}
+    - {fileID: 21300000, guid: 21df001eedbdca8408155165f6a01c23, type: 3}
   - bodySprite: {fileID: 21300000, guid: 8d5fb795c67367a4cbffacb8780e7872, type: 3}
     faceSprites:
     - {fileID: 21300000, guid: a7250cabb2be7894cb60b11334d300f7, type: 3}
@@ -2436,7 +2434,7 @@ RectTransform:
   - {fileID: 484616790}
   - {fileID: 869977228}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2859,7 +2857,7 @@ Transform:
   - {fileID: 1207419726}
   - {fileID: 1887505221}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1171289760
 GameObject:
@@ -3120,7 +3118,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1207419725
 GameObject:
@@ -3666,7 +3664,7 @@ RectTransform:
   - {fileID: 2049259728}
   - {fileID: 756577118}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4263,7 +4261,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2049259725
 GameObject:

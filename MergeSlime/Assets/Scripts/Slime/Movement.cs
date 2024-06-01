@@ -44,8 +44,8 @@ public class Movement : MonoBehaviour
 
     public void Merge(Slime otherSlime)
     {
-        int maxLv = DataManager.Instance.SLIME_LENGTH;
-        if (otherSlime.level != slime.level || slime.isSpecial || otherSlime.isSpecial || slime.level >= maxLv || otherSlime.level >= maxLv)
+        int maxLv = slime.isSpecial ? DataManager.Instance.SLIME_S_LENGTH : DataManager.Instance.SLIME_LENGTH;
+        if (otherSlime.level != slime.level || slime.level >= maxLv || otherSlime.level >= maxLv || slime.isSpecial != otherSlime.isSpecial)
             return;
 
         slime.SetState(State.Merge);

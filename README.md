@@ -46,4 +46,12 @@
 - 스페셜 슬라임 2종 추가<br/>
 - 슬라임 크기 계산 공식 정립<br/>
 
+<h3>[Test 0.7]</h3>
+<img src="https://github.com/HongDaHyun/MergeSlime/assets/101586627/aad6b2c0-e019-463e-8b3b-0655b0ddca7e" width="360" alt="Test 0.7">
+<br/>
+- 업그레이드 UI 제작<br/>
+- 업그레이드(운) 제작<br/>
+- 희귀 슬라임 등장 확률 공식 정립<br/>
+- 머지 조건 수정<br/>
+
 </details>

@@ -45,8 +45,7 @@ public class BtnManager : Singleton<BtnManager>
 
     public void UpgradeBtn(int id)
     {
-        DataManager dataManager = DataManager.Instance;
-
-        dataManager.IncreaseUpgradeLv(id);
+        DataManager.Instance.upgradeLv[id].UpLevel();
+        UIManager.Instance.SetUpgradeUI(id);
     }
 }

@@ -13,12 +13,10 @@ public class DataManager : Singleton<DataManager>
 
     [Title("난이도 변수", "난이도 관련 조정 가능")]
     public int MINING_CYCLE;
-    public float SPECIAL_INCREASE, SPECIAL_INCREASE_LIMIT;
 
     [Title("중복 변수", "시작 시 자동 처리")]
     [ReadOnly] public int SLIME_LENGTH;
     [ReadOnly] public int SLIME_S_LENGTH;
-    [ReadOnly] public float LUCK_PERCENT;
 
     [Title("기타 변수")]
     public float SLIME_SCALE;
@@ -46,25 +44,6 @@ public class DataManager : Singleton<DataManager>
 
         spawnPrice = spawnPrice != upPrice ? upPrice : spawnPrice + 1;
         UIManager.Instance.moneyUI.SetPrice(spawnPrice);
-    }
-
-    public void IncreaseUpgradeLv(int id)
-    {
-        switch(id)
-        {
-            case 0:
-                if (upgradeLv[id].level > SPECIAL_INCREASE_LIMIT && !coin.LoseCoin(upgradeLv[id].cost))
-                    return;
-
-                upgradeLv[id].UpLevel(SPECIAL_INCREASE);
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-        }
-
-        UIManager.Instance.SetUpgradeUI(id);
     }
 }
 
@@ -105,20 +84,25 @@ public struct Coin
 [Serializable]
 public struct Upgrade
 {
-    public int level;
+    public int level, levelLimit;
     public int cost;
-    public float amount;
+    public float amount, amountIncrease;
 
-    public void UpLevel(float increase)
+    public void UpLevel()
     {
+        DataManager dataManager = DataManager.Instance;
+
+        if (level >= levelLimit || !dataManager.coin.LoseCoin(cost))
+            return;
+
         level++;
-        cost = Math.Max(1, 2 * level);
-        SetAmount(increase);
+        cost += Math.Max(1, 2 * level);
+        SetAmount();
     }
 
-    public void SetAmount(float increase)
+    public void SetAmount()
     {
-        amount = increase * level;
+        amount = amountIncrease * level;
     }
 }
 

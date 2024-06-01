@@ -29,29 +29,25 @@ public class UIManager : Singleton<UIManager>
     private void SetUI()
     {
         moneyUI.SetUI();
+        for (int i = 0; i < upgradePannels.Length; i++)
+            SetUpgradeUI(i);
     }
 
     public void SetUpgradeUI(int id)
     {
-        DataManager dataManager = DataManager.Instance;
-
-        string explain = "";
+        Upgrade upgrade = DataManager.Instance.upgradeLv[id];
 
         if (id == 0)
-        {
-            if (dataManager.upgradeLv[0].level > dataManager.SPECIAL_INCREASE_LIMIT)
-            {
-                upgradePannels[0].btnTxt.text = "MAX";
-                upgradePannels[0].moneyTxt.text = $"<sprite=0> -";
-                return;
-            }
+            upgradePannels[0].UpdateExplain($"Proc: <color=blue>{Mathf.RoundToInt(upgrade.amount * 100)}%</color>");
 
-            explain = $"Proc: <color=blue>{Mathf.RoundToInt(dataManager.LUCK_PERCENT * 100)}%</color>";
-            upgradePannels[0].UpdateUI(explain, dataManager.upgradeLv[0].level, dataManager.upgradeLv[0].cost);
+        if (upgrade.level >= upgrade.levelLimit)
+        {
+            upgradePannels[0].btnTxt.text = "MAX";
+            upgradePannels[0].moneyTxt.text = $"<sprite=0> -";
+            return;
         }
 
-        else
-            upgradePannels[id].UpdateUI(explain, dataManager.upgradeLv[id].level, dataManager.upgradeLv[id].cost);
+        upgradePannels[id].UpdateUI(upgrade.level, upgrade.cost);
     }
 }
 
@@ -86,12 +82,14 @@ public struct UpgradePannel
     public Image icon;
     public TextMeshProUGUI nameTxt, explainTxt, btnTxt, moneyTxt;
 
-    public void UpdateUI(string explain, int level, int cost)
+    public void UpdateUI(int level, int cost)
     {
-        if(explain != "")
-            explainTxt.text = explain;
         btnTxt.text = $"Level: {level}";
-
         moneyTxt.text = $"<sprite=0>{cost}";
+    }
+
+    public void UpdateExplain(string explain)
+    {
+        explainTxt.text = explain;
     }
 }

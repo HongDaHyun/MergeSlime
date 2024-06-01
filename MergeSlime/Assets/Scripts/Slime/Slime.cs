@@ -81,7 +81,7 @@ public class Slime : MonoBehaviour, IPoolObject
         level = _level;
 
         // 특별한 슬라임 인가!!?
-        isSpecial = Random.Range(0f, 1f) < dataManager.LUCK_PERCENT;
+        isSpecial = Random.Range(0f, 1f) < dataManager.upgradeLv[0].amount;
 
         SetSprite();
         SetScale();
