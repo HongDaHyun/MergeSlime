@@ -80,15 +80,20 @@ public class Slime : MonoBehaviour, IPoolObject
         // 1 ~ 16 레벨의 슬라임 예정
         level = _level;
 
-        // 특별한 슬라임 인가!!?
-        isSpecial = Random.Range(0f, 1f) < dataManager.upgradeLv[0].amount;
-
+        SetSpecial();
         SetSprite();
         SetScale();
 
         ReSet();
     }
 
+    private void SetSpecial()
+    {
+        isSpecial = isSpecial ? true : Random.Range(0f, 1f) < dataManager.upgradeLv[0].amount;
+
+        if (level > dataManager.SLIME_S_LENGTH)
+            level = 1;
+    }
     private void SetSprite()
     {
         SlimeSprite slimeSprite = isSpecial ? dataManager.specialSlimeSprites[level - 1] : dataManager.slimeSprites[level - 1];
