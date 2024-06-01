@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 1574766285338108776}
   - component: {fileID: 6210921000918104582}
   - component: {fileID: 7824127750853043948}
+  - component: {fileID: 2182053687005089438}
   m_Layer: 0
   m_Name: Slime
   m_TagString: Slime
@@ -370,6 +371,8 @@ MonoBehaviour:
   col: {fileID: 0}
   spawnManager: {fileID: 0}
   dataManager: {fileID: 0}
+  mining: {fileID: 0}
+  expression: {fileID: 0}
 --- !u!114 &6210921000918104582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -394,5 +397,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a26347f098a08d347add3eb5978207ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  miningAmount: 0
+--- !u!114 &2182053687005089438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574766285338108774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5543f1772817f0041a355e2274dd9f56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

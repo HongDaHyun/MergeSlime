@@ -44,7 +44,8 @@ public class Movement : MonoBehaviour
 
     public void Merge(Slime otherSlime)
     {
-        if (otherSlime.level != slime.level)
+        int maxLv = DataManager.Instance.SLIME_LENGTH;
+        if (otherSlime.level != slime.level || slime.isSpecial || otherSlime.isSpecial || slime.level >= maxLv || otherSlime.level >= maxLv)
             return;
 
         slime.SetState(State.Merge);
@@ -52,7 +53,8 @@ public class Movement : MonoBehaviour
 
         slime.spawnManager.DeSpawnSlime(otherSlime);
         slime.spawnManager.SpawnPop(slime.body.transform);
-        slime.SetSlime(++slime.level);
+        slime.SetSlime(slime.level + 1);
+        slime.expression.SetFace(Face.Surprise, 1.5f);
 
         slime.dataManager.coin.GainCoin(slime.mining.miningAmount);
         slime.spawnManager.SpawnMoneyTxt(slime.body.transform, slime.mining.miningAmount);

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 using Redcode.Pools;
 
 public class Slime : MonoBehaviour, IPoolObject
@@ -9,6 +8,7 @@ public class Slime : MonoBehaviour, IPoolObject
     public SpriteRenderer shadow, body, face;
     public int level;
     public State state;
+    public bool isSpecial;
 
     [HideInInspector] public Rigidbody2D rigid;
     [HideInInspector] public CircleCollider2D col;
@@ -17,6 +17,7 @@ public class Slime : MonoBehaviour, IPoolObject
 
     private Movement movement;
     [HideInInspector] public Mining mining;
+    [HideInInspector] public Expression expression;
 
     public void OnCreatedInPool()
     {
@@ -26,6 +27,7 @@ public class Slime : MonoBehaviour, IPoolObject
         dataManager = DataManager.Instance;
         movement = GetComponent<Movement>();
         mining = GetComponent<Mining>();
+        expression = GetComponent<Expression>();
     }
 
     public void OnGettingFromPool()
@@ -78,15 +80,25 @@ public class Slime : MonoBehaviour, IPoolObject
         // 1 ~ 16 레벨의 슬라임 예정
         level = _level;
 
-        SlimeSprite slimeSprite = dataManager.slimeSprites[level - 1];
+        // 특별한 슬라임 인가!!?
+        isSpecial = Random.Range(0f, 1f) < dataManager.LUCK_PERCENT;
 
-        body.sprite = slimeSprite.bodySprite;
-        face.sprite = slimeSprite.faceSprites[1];
-
-        float scale = dataManager.SLIME_SCALE + ((level - 1) * 0.1f);
-        transform.localScale = new Vector3(scale, scale, scale);
+        SetSprite();
+        SetScale();
 
         ReSet();
+    }
+
+    private void SetSprite()
+    {
+        SlimeSprite slimeSprite = isSpecial ? dataManager.specialSlimeSprites[level - 1] : dataManager.slimeSprites[level - 1];
+        body.sprite = slimeSprite.bodySprite;
+    }
+    private void SetScale()
+    {
+        float increase = isSpecial ? 0.5f : 0.1f;
+        float scale = dataManager.SLIME_SCALE + ((level - 1) * increase);
+        transform.localScale = new Vector3(scale, scale, scale);
     }
 
     public void SetState(State _state)
@@ -97,9 +109,11 @@ public class Slime : MonoBehaviour, IPoolObject
         {
             case State.Idle:
                 rigid.simulated = true;
+                expression.SetFace(Face.Idle);
                 break;
             case State.Pick:
                 rigid.simulated = false;
+                expression.SetFace(Face.Cute);
                 break;
             case State.Merge:
                 break;

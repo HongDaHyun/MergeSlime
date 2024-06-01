@@ -16,7 +16,7 @@ public class Mining : MonoBehaviour
 
     public void ReSet()
     {
-        maxMiningT = slime.dataManager.MAX_MINING - (slime.dataManager.MAX_MINING / slime.dataManager.SLIME_LENGTH * (slime.level - 1));
+        maxMiningT = slime.dataManager.MINING_CYCLE - (slime.dataManager.MINING_CYCLE / slime.dataManager.SLIME_LENGTH * (slime.level - 1));
         miningAmount = (int)Mathf.Pow(slime.level, 2);
 
         StopAllCoroutines();

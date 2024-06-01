@@ -42,4 +42,11 @@ public class BtnManager : Singleton<BtnManager>
 
         sm.SpawnSlime(1, ranVec);
     }
+
+    public void UpgradeBtn(int id)
+    {
+        DataManager dataManager = DataManager.Instance;
+
+        dataManager.IncreaseUpgradeLv(id);
+    }
 }

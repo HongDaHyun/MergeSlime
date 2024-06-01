@@ -114,6 +114,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
         slime.transform.position = vec2;
         slime.SetSlime(level);
+        slime.expression.SetFace(Face.Cute, 1.5f);
         SpawnPop(slime.transform);
 
         return slime;
