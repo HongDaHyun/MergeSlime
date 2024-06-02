@@ -151,7 +151,7 @@ public class SpawnManager : Singleton<SpawnManager>
         text.text = $"+ <sprite=0>{amount}";
         text.transform.position = parent.position;
         Vector3 scale = parent.transform.localScale;
-        text.transform.localScale = new Vector3(scale.x + 0.3f, scale.y + 0.3f, scale.z + 0.3f);
+        text.transform.localScale = new Vector3(scale.x, scale.y, scale.z);
         text.color = Vector4.one;
 
         // ¥Â∆Æ¿©

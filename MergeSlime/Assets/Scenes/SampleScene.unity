@@ -936,6 +936,16 @@ MonoBehaviour:
     explainTxt: {fileID: 1876492407}
     btnTxt: {fileID: 358950313}
     moneyTxt: {fileID: 1778086158}
+  - icon: {fileID: 1247662149}
+    nameTxt: {fileID: 1927694706}
+    explainTxt: {fileID: 10409978}
+    btnTxt: {fileID: 1054919805}
+    moneyTxt: {fileID: 627764241}
+  - icon: {fileID: 1295701358}
+    nameTxt: {fileID: 1833108760}
+    explainTxt: {fileID: 397691418}
+    btnTxt: {fileID: 2105254984}
+    moneyTxt: {fileID: 1040744634}
 --- !u!1 &298972773
 GameObject:
   m_ObjectHideFlags: 0
@@ -2324,13 +2334,28 @@ MonoBehaviour:
   coin:
     amount: 500
   spawnPrice: 1
+  lastConnect: 2024-06-03 01:00:00
   upgradeLv:
   - level: 0
-    levelLimit: 80
-    cost: 1
+    cost: 5
     amount: 0
-    amountIncrease: 0.01
+    levelLimit: 80
+    costIncrease: 5
+    amountIncrease: 1
+  - level: 0
+    cost: 100
+    amount: 0
+    levelLimit: -1
+    costIncrease: 300
+    amountIncrease: 1
+  - level: 0
+    cost: 100
+    amount: 500
+    levelLimit: -1
+    costIncrease: 100
+    amountIncrease: 1000
   MINING_CYCLE: 5
+  MAX_CONNECT_MINUTES: 600
   SLIME_LENGTH: 0
   SLIME_S_LENGTH: 0
   SLIME_SCALE: 0.3
@@ -5003,7 +5028,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5466,7 +5491,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

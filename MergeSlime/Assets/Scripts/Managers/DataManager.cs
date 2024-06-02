@@ -9,10 +9,12 @@ public class DataManager : Singleton<DataManager>
     [Title("저장 변수")]
     public Coin coin;
     public int spawnPrice;
+    public string lastConnect;
     public Upgrade[] upgradeLv;
 
     [Title("난이도 변수", "난이도 관련 조정 가능")]
     public int MINING_CYCLE;
+    public int MAX_CONNECT_MINUTES;
 
     [Title("중복 변수", "시작 시 자동 처리")]
     [ReadOnly] public int SLIME_LENGTH;
@@ -29,6 +31,8 @@ public class DataManager : Singleton<DataManager>
     {
         base.Awake();
 
+        // 데이터 로드 들어가야 함
+
         SetData();
     }
 
@@ -36,6 +40,20 @@ public class DataManager : Singleton<DataManager>
     {
         SLIME_LENGTH = slimeSprites.Length;
         SLIME_S_LENGTH = specialSlimeSprites.Length;
+
+        ConnectReward();
+    }
+
+    private void ConnectReward()
+    {
+        if (lastConnect == "")
+            return;
+
+        TimeSpan timespan = DateTime.Now - Convert.ToDateTime(lastConnect);
+
+        double proportion = Math.Min(1.0, timespan.TotalMinutes / MAX_CONNECT_MINUTES);
+
+        coin.GainCoin((int)(upgradeLv[2].amount * proportion));
     }
 
     public void SetPrice()
@@ -84,19 +102,25 @@ public struct Coin
 [Serializable]
 public struct Upgrade
 {
-    public int level, levelLimit;
+    [Title("저장 변수")]
+    public int level;
     public int cost;
-    public float amount, amountIncrease;
+    public int amount;
+
+    [Title("난이도 변수")]
+    public int levelLimit; // -1이면 무한
+    public int costIncrease;
+    public int amountIncrease;
 
     public void UpLevel()
     {
         DataManager dataManager = DataManager.Instance;
 
-        if (level >= levelLimit || !dataManager.coin.LoseCoin(cost))
+        if ((level >= levelLimit && levelLimit != -1) || !dataManager.coin.LoseCoin(cost))
             return;
 
         level++;
-        cost += Math.Max(1, 2 * level);
+        cost += Math.Max(1, costIncrease * level);
         SetAmount();
     }
 

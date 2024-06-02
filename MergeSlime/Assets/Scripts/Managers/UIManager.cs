@@ -38,12 +38,14 @@ public class UIManager : Singleton<UIManager>
         Upgrade upgrade = DataManager.Instance.upgradeLv[id];
 
         if (id == 0)
-            upgradePannels[0].UpdateExplain($"Proc: <color=blue>{Mathf.RoundToInt(upgrade.amount * 100)}%</color>");
+            upgradePannels[0].UpdateExplain($"Proc: <color=blue>{upgrade.amount}%</color>");
+        else
+            upgradePannels[id].UpdateExplain($"+{upgrade.amount}");
 
-        if (upgrade.level >= upgrade.levelLimit)
+        if (upgrade.level >= upgrade.levelLimit && upgrade.levelLimit != -1)
         {
-            upgradePannels[0].btnTxt.text = "MAX";
-            upgradePannels[0].moneyTxt.text = $"<sprite=0> -";
+            upgradePannels[id].btnTxt.text = "MAX";
+            upgradePannels[id].moneyTxt.text = $"<sprite=0> -";
             return;
         }
 
