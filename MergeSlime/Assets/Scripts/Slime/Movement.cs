@@ -53,7 +53,9 @@ public class Movement : MonoBehaviour
 
         slime.spawnManager.DeSpawnSlime(otherSlime);
         slime.spawnManager.SpawnPop(slime.body.transform);
-        slime.SetSlime(slime.level + 1);
+        slime.spawnManager.slimeList[slime.spawnManager.slimeList.FindIndex(lv => lv == slime.level)] = ++slime.level;
+        ES3Manager.Instance.Save(SaveType.SLIMES);
+        slime.SetSlime(slime.level);
         slime.expression.SetFace(Face.Surprise, 1.5f);
 
         slime.dataManager.coin.GainCoin(slime.mining.miningAmount);

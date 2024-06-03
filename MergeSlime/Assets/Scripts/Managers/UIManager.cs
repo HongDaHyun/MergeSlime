@@ -35,7 +35,7 @@ public class UIManager : Singleton<UIManager>
 
     public void SetUpgradeUI(int id)
     {
-        Upgrade upgrade = DataManager.Instance.upgradeLv[id];
+        Upgrade upgrade = DataManager.Instance.upgrades[id];
 
         if (id == 0)
             upgradePannels[0].UpdateExplain($"Proc: <color=blue>{upgrade.amount}%</color>");

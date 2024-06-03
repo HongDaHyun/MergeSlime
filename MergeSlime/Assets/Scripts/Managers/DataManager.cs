@@ -10,7 +10,7 @@ public class DataManager : Singleton<DataManager>
     public Coin coin;
     public int spawnPrice;
     public string lastConnect;
-    public Upgrade[] upgradeLv;
+    public Upgrade[] upgrades;
 
     [Title("난이도 변수", "난이도 관련 조정 가능")]
     public int MINING_CYCLE;
@@ -22,6 +22,7 @@ public class DataManager : Singleton<DataManager>
 
     [Title("기타 변수")]
     public float SLIME_SCALE;
+    public int DEFAULT_COIN; public int DEFAULT_SPAWNPRICE;
 
     [Title("스프라이트")]
     public SlimeSprite[] slimeSprites;
@@ -31,7 +32,7 @@ public class DataManager : Singleton<DataManager>
     {
         base.Awake();
 
-        // 데이터 로드 들어가야 함
+        ES3Manager.Instance.LoadAll();
 
         SetData();
     }
@@ -47,13 +48,23 @@ public class DataManager : Singleton<DataManager>
     private void ConnectReward()
     {
         if (lastConnect == "")
+        {
+            SetLastConnect();
             return;
+        }
 
         TimeSpan timespan = DateTime.Now - Convert.ToDateTime(lastConnect);
 
         double proportion = Math.Min(1.0, timespan.TotalMinutes / MAX_CONNECT_MINUTES);
 
-        coin.GainCoin((int)(upgradeLv[2].amount * proportion));
+        coin.GainCoin((int)(upgrades[2].amount * proportion));
+        SetLastConnect();
+    }
+
+    private void SetLastConnect()
+    {
+        lastConnect = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        ES3Manager.Instance.Save(SaveType.LastConnect);
     }
 
     public void SetPrice()
@@ -62,6 +73,7 @@ public class DataManager : Singleton<DataManager>
 
         spawnPrice = spawnPrice != upPrice ? upPrice : spawnPrice + 1;
         UIManager.Instance.moneyUI.SetPrice(spawnPrice);
+        ES3Manager.Instance.Save(SaveType.SpawnPrice);
     }
 }
 
@@ -86,6 +98,7 @@ public struct Coin
     {
         amount += _amount;
         UIManager.Instance.moneyUI.SetMoney(amount);
+        ES3Manager.Instance.Save(SaveType.Coin);
     }
 
     public bool LoseCoin(int _amount)
@@ -95,6 +108,7 @@ public struct Coin
 
         amount -= _amount;
         UIManager.Instance.moneyUI.SetMoney(amount);
+        ES3Manager.Instance.Save(SaveType.Coin);
         return true;
     }
 }
@@ -122,6 +136,7 @@ public struct Upgrade
         level++;
         cost += Math.Max(1, costIncrease * level);
         SetAmount();
+        ES3Manager.Instance.Save(SaveType.Upgrades);
     }
 
     public void SetAmount()
@@ -132,3 +147,4 @@ public struct Upgrade
 
 public enum State { Idle = 0, Pick, Merge }
 public enum Face { Cute, Idle, Surprise }
+public enum SaveType { Coin, SpawnPrice, LastConnect, Upgrades, SLIMES }

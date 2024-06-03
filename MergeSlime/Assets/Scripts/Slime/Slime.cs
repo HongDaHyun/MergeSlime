@@ -89,9 +89,9 @@ public class Slime : MonoBehaviour, IPoolObject
 
     private void SetSpecial()
     {
-        isSpecial = isSpecial ? true : Random.Range(0, 100) < dataManager.upgradeLv[0].amount;
+        isSpecial = isSpecial ? true : Random.Range(0, 100) < dataManager.upgrades[0].amount;
 
-        if (level > dataManager.SLIME_S_LENGTH)
+        if (level > dataManager.SLIME_S_LENGTH && isSpecial)
             level = 1;
     }
     private void SetSprite()

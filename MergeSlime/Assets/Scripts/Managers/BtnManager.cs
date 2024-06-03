@@ -35,17 +35,12 @@ public class BtnManager : Singleton<BtnManager>
             return;
         dataManager.SetPrice();
 
-        SpawnManager sm = SpawnManager.Instance;
-        CameraBound camBound = sm.camBound;
-
-        Vector2 ranVec = new Vector2(Random.Range(camBound.Left + 1, camBound.Right - 1), Random.Range(camBound.Bottom + 1, camBound.Top - 1));
-
-        sm.SpawnSlime(1, ranVec);
+        SpawnManager.Instance.SpawnSlime(1, true);
     }
 
     public void UpgradeBtn(int id)
     {
-        DataManager.Instance.upgradeLv[id].UpLevel();
+        DataManager.Instance.upgrades[id].UpLevel();
         UIManager.Instance.SetUpgradeUI(id);
     }
 }
