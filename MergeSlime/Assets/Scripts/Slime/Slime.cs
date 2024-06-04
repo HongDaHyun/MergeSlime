@@ -75,28 +75,37 @@ public class Slime : MonoBehaviour, IPoolObject
         StartCoroutine(movement.DropRoutine());
     }
 
-    public void SetSlime(int _level)
+    public void SetSlime(int _level, bool isSave)
     {
         // 1 ~ 16 레벨의 슬라임 예정
         level = _level;
 
-        SetSpecial();
+        SetSpecial(isSave);
         SetSprite();
         SetScale();
+
+        dataManager.Find_SlimeData_level(level, isSpecial).FindCollect();
+        if (isSave)
+        {
+            dataManager.Find_SlimeData_level(level, isSpecial).IncreaseSpawnCount();
+            ES3Manager.Instance.Save(SaveType.SlimeData);
+        }
 
         ReSet();
     }
 
-    private void SetSpecial()
+    private void SetSpecial(bool isSave)
     {
-        isSpecial = isSpecial ? true : Random.Range(0, 100) < dataManager.upgrades[0].amount;
+        if (!isSave || isSpecial)
+            return;
 
-        if (level > dataManager.SLIME_S_LENGTH && isSpecial)
+        isSpecial = Random.Range(0, 100) < dataManager.upgrades[0].amount;
+        if (isSpecial)
             level = 1;
     }
     private void SetSprite()
     {
-        SlimeSprite slimeSprite = isSpecial ? dataManager.specialSlimeSprites[level - 1] : dataManager.slimeSprites[level - 1];
+        SlimeSprite slimeSprite = dataManager.Find_SlimeData_level(level, isSpecial).sprite;
         body.sprite = slimeSprite.bodySprite;
     }
     private void SetScale()

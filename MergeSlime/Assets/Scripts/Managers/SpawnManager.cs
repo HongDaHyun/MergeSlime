@@ -9,7 +9,6 @@ public class SpawnManager : Singleton<SpawnManager>
 {
     public CameraBound camBound;
     public Transform border_L, border_R, border_T, border_B;
-    public List<int> slimeList;
 
     protected override void Awake()
     {
@@ -25,8 +24,13 @@ public class SpawnManager : Singleton<SpawnManager>
         StartCoroutine(CloudSpawnRoutine());
         StartCoroutine(StarSpawnRoutine());
 
-        foreach (int s in slimeList)
-            SpawnSlime(s, false);
+        foreach (SlimeData data in DataManager.Instance.slimeDatas)
+            for(int i = 0; i < data.spawnCount; i++)
+                SpawnSlime(data.level, false);
+
+        foreach (SlimeData data in DataManager.Instance.slimeDatas_S)
+            for (int i = 0; i < data.spawnCount; i++)
+                SpawnSlime(data.level, true);
     }
 
     #region ¸Ê
@@ -117,36 +121,43 @@ public class SpawnManager : Singleton<SpawnManager>
         Slime slime = PoolManager.Instance.GetFromPool<Slime>("Slime");
 
         slime.transform.position = vec2;
-        slime.SetSlime(level);
+        slime.SetSlime(level, true);
         slime.expression.SetFace(Face.Cute, 1.5f);
+
         SpawnPop(slime.transform);
-        slimeList.Add(level);
-        ES3Manager.Instance.Save(SaveType.SLIMES);
 
         return slime;
     }
-    public Slime SpawnSlime(int level, bool isSave)
+    public Slime SpawnSlime(int level)
     {
         Slime slime = PoolManager.Instance.GetFromPool<Slime>("Slime");
 
         slime.transform.position = new Vector2(Random.Range(camBound.Left + 1, camBound.Right - 1), Random.Range(camBound.Bottom + 1, camBound.Top - 1));
-        slime.SetSlime(level);
+        slime.SetSlime(level, true);
         slime.expression.SetFace(Face.Cute, 1.5f);
+
         SpawnPop(slime.transform);
-        if (isSave)
-        {
-            slimeList.Add(level);
-            ES3Manager.Instance.Save(SaveType.SLIMES);
-        }
+
+        return slime;
+    }
+    public Slime SpawnSlime(int level, bool isSpecial) // Not Save
+    {
+        Slime slime = PoolManager.Instance.GetFromPool<Slime>("Slime");
+
+        slime.transform.position = new Vector2(Random.Range(camBound.Left + 1, camBound.Right - 1), Random.Range(camBound.Bottom + 1, camBound.Top - 1));
+        slime.isSpecial = isSpecial;
+        slime.SetSlime(level, false);
+        slime.expression.SetFace(Face.Cute, 1.5f);
+
+        SpawnPop(slime.transform);
 
         return slime;
     }
 
     public void DeSpawnSlime(Slime slime)
     {
-        slimeList.Remove(slime.level);
+        DataManager.Instance.Find_SlimeData_level(slime.level, slime.isSpecial).DecreaseSpawnCount();
         PoolManager.Instance.TakeToPool<Slime>(slime);
-        ES3Manager.Instance.Save(SaveType.SLIMES);
     }
     #endregion
 

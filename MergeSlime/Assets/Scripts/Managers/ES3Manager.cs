@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ES3Manager : Singleton<ES3Manager>
@@ -15,7 +16,8 @@ public class ES3Manager : Singleton<ES3Manager>
         ES3.Save<int>(SaveType.SpawnPrice.ToString(), data.spawnPrice, DATA_PATH);
         ES3.Save<string>(SaveType.LastConnect.ToString(), data.lastConnect, DATA_PATH);
         ES3.Save<Upgrade[]>(SaveType.Upgrades.ToString(), data.upgrades, DATA_PATH);
-        ES3.Save<List<int>>(SaveType.SLIMES.ToString(), SpawnManager.Instance.slimeList, SLIME_PATH);
+        ES3.Save<SlimeData[]>(SaveType.SlimeData.ToString(), data.slimeDatas, SLIME_PATH);
+        ES3.Save<SlimeData[]>(SaveType.SlimeData_S.ToString(), data.slimeDatas_S, SLIME_PATH);
     }
     public void Save(SaveType type)
     {
@@ -37,8 +39,9 @@ public class ES3Manager : Singleton<ES3Manager>
             case SaveType.Upgrades:
                 ES3.Save<Upgrade[]>(type_s, data.upgrades, DATA_PATH);
                 break;
-            case SaveType.SLIMES:
-                ES3.Save<List<int>>(type_s, SpawnManager.Instance.slimeList, SLIME_PATH);
+            case SaveType.SlimeData:
+                ES3.Save<SlimeData[]>(SaveType.SlimeData.ToString(), data.slimeDatas, SLIME_PATH);
+                ES3.Save<SlimeData[]>(SaveType.SlimeData_S.ToString(), data.slimeDatas_S, SLIME_PATH);
                 break;
         }
     }
@@ -59,8 +62,24 @@ public class ES3Manager : Singleton<ES3Manager>
             dataManager.upgrades[i].amount = upgrades[i].amount;
         }
 
-        SpawnManager spawnManager = SpawnManager.Instance;
+        SlimeData[] loadDatas = ES3.Load<SlimeData[]>(SaveType.SlimeData.ToString(), SLIME_PATH, dataManager.slimeDatas);
+        SlimeData[] loadDatas_S = ES3.Load<SlimeData[]>(SaveType.SlimeData_S.ToString(), SLIME_PATH, dataManager.slimeDatas_S);
 
-        spawnManager.slimeList = ES3.Load<List<int>>(SaveType.SLIMES.ToString(), SLIME_PATH, new List<int>());
+        foreach (SlimeData data in loadDatas)
+        {
+            if (data.spawnCount > 0)
+            {
+                dataManager.Find_SlimeData_Ref(data.ID, false).isCollect = data.isCollect;
+                dataManager.Find_SlimeData_Ref(data.ID, false).spawnCount = data.spawnCount;
+            }
+        }
+        foreach (SlimeData data in loadDatas_S)
+        {
+            if (data.spawnCount > 0)
+            {
+                dataManager.Find_SlimeData_Ref(data.ID, true).isCollect = data.isCollect;
+                dataManager.Find_SlimeData_Ref(data.ID, true).spawnCount = data.spawnCount;
+            }
+        }
     }
 }

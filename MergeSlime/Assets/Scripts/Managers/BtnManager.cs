@@ -35,7 +35,7 @@ public class BtnManager : Singleton<BtnManager>
             return;
         dataManager.SetPrice();
 
-        SpawnManager.Instance.SpawnSlime(1, true);
+        SpawnManager.Instance.SpawnSlime(1);
     }
 
     public void UpgradeBtn(int id)

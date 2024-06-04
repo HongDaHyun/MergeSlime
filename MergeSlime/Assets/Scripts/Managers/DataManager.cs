@@ -24,9 +24,9 @@ public class DataManager : Singleton<DataManager>
     public float SLIME_SCALE;
     public int DEFAULT_COIN; public int DEFAULT_SPAWNPRICE;
 
-    [Title("스프라이트")]
-    public SlimeSprite[] slimeSprites;
-    public SlimeSprite[] specialSlimeSprites;
+    [Title("슬라임 변수")]
+    public SlimeData[] slimeDatas;
+    public SlimeData[] slimeDatas_S;
 
     protected override void Awake()
     {
@@ -39,8 +39,8 @@ public class DataManager : Singleton<DataManager>
 
     private void SetData()
     {
-        SLIME_LENGTH = slimeSprites.Length;
-        SLIME_S_LENGTH = specialSlimeSprites.Length;
+        SLIME_LENGTH = slimeDatas.Length;
+        SLIME_S_LENGTH = slimeDatas_S.Length;
 
         ConnectReward();
     }
@@ -74,6 +74,28 @@ public class DataManager : Singleton<DataManager>
         spawnPrice = spawnPrice != upPrice ? upPrice : spawnPrice + 1;
         UIManager.Instance.moneyUI.SetPrice(spawnPrice);
         ES3Manager.Instance.Save(SaveType.SpawnPrice);
+    }
+
+    public SlimeData Find_SlimeData(int id, bool isSpecial)
+    {
+        if (isSpecial)
+            return Array.Find(slimeDatas_S, slime => slime.ID == id);
+        else
+            return Array.Find(slimeDatas, slime => slime.ID == id);
+    }
+    public SlimeData Find_SlimeData_level(int level, bool isSpecial)
+    {
+        if (isSpecial)
+            return Array.Find(slimeDatas_S, slime => slime.level == level);
+        else
+            return Array.Find(slimeDatas, slime => slime.level == level);
+    }
+    public ref SlimeData Find_SlimeData_Ref(int id, bool isSpecial)
+    {
+        if (isSpecial)
+            return ref slimeDatas_S[Array.FindIndex(slimeDatas_S, slime => slime.ID == id)];
+        else
+            return ref slimeDatas[Array.FindIndex(slimeDatas, slime => slime.ID == id)];
     }
 }
 
@@ -145,6 +167,44 @@ public struct Upgrade
     }
 }
 
+[Serializable]
+public class SlimeData
+{
+    [Title("고유 변수", "ID 제외 수정 가능")]
+    public int ID;
+    public int level;
+    public string name;
+    public string explain;
+    public Color color;
+    public SlimeSprite sprite;
+
+    [Title("저장 변수")]
+    public bool isCollect;
+    public int spawnCount;
+
+    [Title("난이도 변수")]
+    public int miningAmount;
+    public float miningMaxCool;
+
+    public void FindCollect()
+    {
+        if (isCollect)
+            return;
+
+        isCollect = true;
+        UIManager.Instance.collecionPannel.SetPannel_NewCollection(level, false);
+    }
+
+    public void IncreaseSpawnCount()
+    {
+        spawnCount++;
+    }
+    public void DecreaseSpawnCount()
+    {
+        spawnCount--;
+    }
+}
+
 public enum State { Idle = 0, Pick, Merge }
 public enum Face { Cute, Idle, Surprise }
-public enum SaveType { Coin, SpawnPrice, LastConnect, Upgrades, SLIMES }
+public enum SaveType { Coin, SpawnPrice, LastConnect, Upgrades, SlimeData, SlimeData_S}

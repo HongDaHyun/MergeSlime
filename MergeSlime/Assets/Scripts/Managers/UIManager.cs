@@ -5,6 +5,7 @@ using Sirenix.OdinInspector;
 using TMPro;
 using System;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -17,6 +18,7 @@ public class UIManager : Singleton<UIManager>
     [Title("¿Œ∞‘¿”")]
     public RectTransform bgCanvas;
     public UpgradePannel[] upgradePannels;
+    public CollectionPannel collecionPannel;
 
     private void Start()
     {
@@ -93,5 +95,52 @@ public struct UpgradePannel
     public void UpdateExplain(string explain)
     {
         explainTxt.text = explain;
+    }
+}
+
+[Serializable]
+public struct CollectionPannel
+{
+    public RectTransform pannel;
+    public TextMeshProUGUI titleTxt;
+    public Image bodyImg, faceImg;
+    public TextMeshProUGUI nameTxt;
+    public TextMeshProUGUI explainTxt;
+    public TextMeshProUGUI moneyTxt;
+    public RectTransform specialRect;
+
+    public void SetPannel_NewCollection(int level, bool isSpecial)
+    {
+        DataManager dataManager = DataManager.Instance;
+        BtnManager.Instance.Tab(pannel);
+
+        titleTxt.text = "New!!";
+
+        SlimeData data = dataManager.Find_SlimeData_level(level, isSpecial);
+
+        bodyImg.sprite = data.sprite.bodySprite;
+        faceImg.sprite = data.sprite.FindFace(Face.Idle);
+
+        nameTxt.text = data.name;
+        nameTxt.color = data.color;
+        explainTxt.text = data.explain;
+        moneyTxt.text = $"{(int)Mathf.Pow(level, 3)}/sec";
+
+        SetSpecial(isSpecial);
+    }
+
+    private void SetSpecial(bool isSpecial)
+    {
+        if (isSpecial)
+        {
+            specialRect.gameObject.SetActive(true);
+            specialRect.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            Sequence seq = DOTween.Sequence().SetUpdate(true);
+            seq.Append(specialRect.DOScale(1.5f, 1f))
+                .Append(specialRect.DOScale(0.5f, 1f))
+                .SetLoops(-1);
+        }
+        else
+            specialRect.gameObject.SetActive(false);
     }
 }

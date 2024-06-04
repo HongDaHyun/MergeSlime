@@ -14,8 +14,7 @@ public class Expression : MonoBehaviour
 
     public void SetFace(Face _face)
     {
-        slime.face.sprite = slime.isSpecial ?
-            slime.dataManager.specialSlimeSprites[slime.level - 1].FindFace(_face) : slime.dataManager.slimeSprites[slime.level - 1].FindFace(_face);
+        slime.face.sprite = slime.dataManager.Find_SlimeData_level(slime.level, slime.isSpecial).sprite.FindFace(_face);
     }
 
     public void SetFace(Face _face, float time)

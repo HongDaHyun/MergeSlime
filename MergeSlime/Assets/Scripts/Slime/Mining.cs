@@ -25,7 +25,7 @@ public class Mining : MonoBehaviour
     private void SetAmount()
     {
         int increase = slime.isSpecial ? slime.level + slime.dataManager.SLIME_LENGTH : slime.level;
-        miningAmount = (int)Mathf.Pow(increase, 2) + slime.dataManager.upgrades[1].amount;
+        miningAmount = (int)Mathf.Pow(increase, 3) + slime.dataManager.upgrades[1].amount;
     }
 
     private IEnumerator MiningRoutine()
