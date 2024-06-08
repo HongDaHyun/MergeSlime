@@ -66,4 +66,14 @@
 - 마이닝 쿨타임 계산 버그 수정<br/>
 - 특별 슬라임 관련 버그 수정<br/>
 
+<h3>[Test 0.8.1]</h3>
+- 컬렉션에 새 슬라임 추가 시 안내 UI 생성<br/>
+- 슬라임 데이터 관련 통합<br/>
+- 슬라임 저장&로드 방식 변경<br/>
+- 마이닝 관련 공식 변경 에정<br/>
+
+<h3>[Test 0.8.2]</h3>
+<img src="https://github.com/HongDaHyun/MergeSlime/assets/101586627/9640e2a5-b6aa-457a-b882-25e2a71335f8" width="360" alt="Test 0.8.2">
+<br/>
+- 버튼 UI 이미지 추가<br/>
 </details>

@@ -124,7 +124,7 @@ public struct CollectionPannel
         nameTxt.text = data.name;
         nameTxt.color = data.color;
         explainTxt.text = data.explain;
-        moneyTxt.text = $"{(int)Mathf.Pow(level, 3)}/sec";
+        moneyTxt.text = $"{data.miningAmount}/{data.miningMaxCool}sec";
 
         SetSpecial(isSpecial);
     }
