@@ -2559,24 +2559,27 @@ MonoBehaviour:
   lastConnect: 
   upgrades:
   - level: 0
+    levelLimit: 80
     cost: 10
     amount: 0
-    levelLimit: 80
     costIncrease: 5
     amountIncrease: 1
   - level: 0
-    cost: 300
-    amount: 0
     levelLimit: -1
-    costIncrease: 300
-    amountIncrease: 1
+    cost: 500
+    amount: 0
+    costIncrease: 500
+    amountIncrease: 50
   - level: 0
+    levelLimit: -1
     cost: 100
     amount: 0
-    levelLimit: -1
-    costIncrease: 100
+    costIncrease: 200
     amountIncrease: 1000
-  MINING_CYCLE: 5
+  MAX_MINING_CYCLE: 7
+  LEVEL_PER_MINING_REDUCE_COOLDOWN: 0.2
+  LEVEL_PER_MINING_INCREASE_AMOUNT: 5
+  SPECIAL_MINING_COOLDOWN_INCEASE_AMOUNT: 2
   MAX_CONNECT_MINUTES: 600
   SLIME_LENGTH: 0
   SLIME_S_LENGTH: 0
@@ -2597,8 +2600,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 9a05479090b428246a1e156f76a01bfc, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 1
     level: 2
     name: Sandbox
@@ -2612,8 +2613,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 5519cb8d720bc5847954e3ae088f6641, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 2
     level: 3
     name: ADA
@@ -2627,8 +2626,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c97b304dff59fdc43b91708245c942c0, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 3
     level: 4
     name: Ripple
@@ -2642,8 +2639,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 99675343d416ffc4b919b51476040276, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 4
     level: 5
     name: XEM
@@ -2657,8 +2652,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 5c888f5d5db3f9b43a624d7982c27986, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 5
     level: 6
     name: Shiba-Inu
@@ -2672,8 +2665,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 5e87a4d459d70d848814c1f6c932198a, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 6
     level: 7
     name: Doge
@@ -2687,8 +2678,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 7bb2749e20e24ec4eb1d58c65f902644, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 7
     level: 8
     name: Stacks
@@ -2702,8 +2691,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 21df001eedbdca8408155165f6a01c23, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 8
     level: 9
     name: Ton
@@ -2717,8 +2704,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 9a68c0241bc07bb46a64b386aebafe25, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 9
     level: 10
     name: Metadium
@@ -2732,8 +2717,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: fe7cb06df7c7d2e44901f3629caf545f, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 10
     level: 11
     name: Golem
@@ -2747,8 +2730,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 7f5cdf202bc707d4fa2cf1085a947d09, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 11
     level: 12
     name: Milk
@@ -2762,8 +2743,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: f4a9a31c51b74944c947713d2f24ab73, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 12
     level: 13
     name: Waves
@@ -2777,8 +2756,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: fe4bca0d97fd30349a58d971b33c1f8b, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 13
     level: 14
     name: Solana
@@ -2792,8 +2769,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 1dffc82ea84c87a4d84e4849555e4fb6, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 14
     level: 15
     name: Chiliz
@@ -2807,8 +2782,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 241d5fd07ea535b4b838156cb3161b30, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 15
     level: 16
     name: Axie-Infinity
@@ -2822,8 +2795,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 2286fc9c084bb3b4f9878d774c2635b9, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   slimeDatas_S:
   - ID: 0
     level: 1
@@ -2838,8 +2809,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: c18ce1d8d67484943a79d52e09cdaf5f, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
   - ID: 1
     level: 2
     name: Yet
@@ -2853,8 +2822,6 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 9df553d3e16c7cd4dac3e59344f29484, type: 3}
     isCollect: 0
     spawnCount: 0
-    miningAmount: 0
-    miningMaxCool: 0
 --- !u!1 &681013413
 GameObject:
   m_ObjectHideFlags: 0
@@ -5203,7 +5170,7 @@ MonoBehaviour:
   m_fontSize: 50
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

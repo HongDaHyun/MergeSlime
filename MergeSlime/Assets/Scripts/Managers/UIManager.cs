@@ -39,10 +39,18 @@ public class UIManager : Singleton<UIManager>
     {
         Upgrade upgrade = DataManager.Instance.upgrades[id];
 
-        if (id == 0)
-            upgradePannels[0].UpdateExplain($"Proc: <color=blue>{upgrade.amount}%</color>");
-        else
-            upgradePannels[id].UpdateExplain($"+{upgrade.amount}");
+        switch(id)
+        {
+            case 0:
+                upgradePannels[0].UpdateExplain($"Proc: <color=blue>{upgrade.amount}%</color>");
+                break;
+            case 1:
+                upgradePannels[id].UpdateExplain($"x{upgrade.amount}%");
+                break;
+            case 2:
+                upgradePannels[id].UpdateExplain($"+{upgrade.amount}");
+                break;
+        }
 
         if (upgrade.level >= upgrade.levelLimit && upgrade.levelLimit != -1)
         {
@@ -124,7 +132,7 @@ public struct CollectionPannel
         nameTxt.text = data.name;
         nameTxt.color = data.color;
         explainTxt.text = data.explain;
-        moneyTxt.text = $"{data.miningAmount}/{data.miningMaxCool}sec";
+        moneyTxt.text = $"{data.GetMiningAmount(isSpecial)}/{data.GetMiningCool(isSpecial)}sec";
 
         SetSpecial(isSpecial);
     }

@@ -76,4 +76,9 @@
 <img src="https://github.com/HongDaHyun/MergeSlime/assets/101586627/9640e2a5-b6aa-457a-b882-25e2a71335f8" width="360" alt="Test 0.8.2">
 <br/>
 - 버튼 UI 이미지 추가<br/>
+
+<h3>[Test 0.8.3]</h3>
+- 슬라임 로드하는 과정에서 수집 초기화되는 버그 수정<br/>
+- 업그레이드 로드 방식 최적화 (난이도 조정, 성능 ++)<br/>
+- 레벨 디자인 (마이닝 관련)<br/>
 </details>

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ES3Types
 {
 	[UnityEngine.Scripting.Preserve]
-	[ES3PropertiesAttribute("level", "cost", "amount")]
+	[ES3PropertiesAttribute("level")]
 	public class ES3UserType_Upgrade : ES3Type
 	{
 		public static ES3Type Instance = null;
@@ -17,8 +17,6 @@ namespace ES3Types
 			var instance = (Upgrade)obj;
 			
 			writer.WriteProperty("level", instance.level, ES3Type_int.Instance);
-			writer.WriteProperty("cost", instance.cost, ES3Type_int.Instance);
-			writer.WriteProperty("amount", instance.amount, ES3Type_int.Instance);
 		}
 
 		public override object Read<T>(ES3Reader reader)
@@ -32,12 +30,6 @@ namespace ES3Types
 					
 					case "level":
 						instance.level = reader.Read<System.Int32>(ES3Type_int.Instance);
-						break;
-					case "cost":
-						instance.cost = reader.Read<System.Int32>(ES3Type_int.Instance);
-						break;
-					case "amount":
-						instance.amount = reader.Read<System.Int32>(ES3Type_int.Instance);
 						break;
 					default:
 						reader.Skip();

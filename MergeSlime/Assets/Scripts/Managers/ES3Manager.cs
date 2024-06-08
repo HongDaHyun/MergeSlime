@@ -58,8 +58,11 @@ public class ES3Manager : Singleton<ES3Manager>
         for (int i = 0; i < upgrades.Length; i++)
         {
             dataManager.upgrades[i].level = upgrades[i].level;
-            dataManager.upgrades[i].cost = upgrades[i].cost;
-            dataManager.upgrades[i].amount = upgrades[i].amount;
+            if(upgrades[i].level > 0)
+            {
+                dataManager.upgrades[i].SetCost();
+                dataManager.upgrades[i].SetAmount();
+            }
         }
 
         SlimeData[] loadDatas = ES3.Load<SlimeData[]>(SaveType.SlimeData.ToString(), SLIME_PATH, dataManager.slimeDatas);
@@ -67,19 +70,15 @@ public class ES3Manager : Singleton<ES3Manager>
 
         foreach (SlimeData data in loadDatas)
         {
-            if (data.spawnCount > 0)
-            {
-                dataManager.Find_SlimeData_Ref(data.ID, false).isCollect = data.isCollect;
+            dataManager.Find_SlimeData_Ref(data.ID, false).isCollect = data.isCollect;
+            if (data.spawnCount > 0 && data.isCollect)
                 dataManager.Find_SlimeData_Ref(data.ID, false).spawnCount = data.spawnCount;
-            }
         }
         foreach (SlimeData data in loadDatas_S)
         {
-            if (data.spawnCount > 0)
-            {
-                dataManager.Find_SlimeData_Ref(data.ID, true).isCollect = data.isCollect;
+            dataManager.Find_SlimeData_Ref(data.ID, true).isCollect = data.isCollect;
+            if (data.spawnCount > 0 && data.isCollect)
                 dataManager.Find_SlimeData_Ref(data.ID, true).spawnCount = data.spawnCount;
-            }
         }
     }
 }

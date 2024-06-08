@@ -13,8 +13,11 @@ public class DataManager : Singleton<DataManager>
     public Upgrade[] upgrades;
 
     [Title("난이도 변수", "난이도 관련 조정 가능")]
-    public int MINING_CYCLE;
-    public int MAX_CONNECT_MINUTES;
+    public int MAX_MINING_CYCLE; // 최대 마이닝 쿨다운(레벨 1일 때)
+    public float LEVEL_PER_MINING_REDUCE_COOLDOWN; // 레벨 당 쿨다운 감소량
+    public float LEVEL_PER_MINING_INCREASE_AMOUNT; // 레벨 당 마이닝 증가량
+    public float SPECIAL_MINING_COOLDOWN_INCEASE_AMOUNT; // 스페셜 슬라임 쿨다운 감소량의 증가배수 (~배 / ex. 2배, 2.5배 등)
+    public int MAX_CONNECT_MINUTES; // 최대 접속 보상 시간
 
     [Title("중복 변수", "시작 시 자동 처리")]
     [ReadOnly] public int SLIME_LENGTH;
@@ -140,11 +143,11 @@ public struct Upgrade
 {
     [Title("저장 변수")]
     public int level;
-    public int cost;
-    public int amount;
 
     [Title("난이도 변수")]
     public int levelLimit; // -1이면 무한
+    public int cost;
+    public int amount;
     public int costIncrease;
     public int amountIncrease;
 
@@ -156,14 +159,18 @@ public struct Upgrade
             return;
 
         level++;
-        cost += Math.Max(1, costIncrease * level);
+        SetCost();
         SetAmount();
         ES3Manager.Instance.Save(SaveType.Upgrades);
     }
 
+    public void SetCost()
+    {
+        cost += costIncrease * level;
+    }
     public void SetAmount()
     {
-        amount = amountIncrease * level;
+        amount += amountIncrease * level;
     }
 }
 
@@ -182,10 +189,6 @@ public class SlimeData
     public bool isCollect;
     public int spawnCount;
 
-    [Title("난이도 변수")]
-    public int miningAmount;
-    public float miningMaxCool;
-
     public void FindCollect()
     {
         if (isCollect)
@@ -202,6 +205,24 @@ public class SlimeData
     public void DecreaseSpawnCount()
     {
         spawnCount--;
+    }
+
+    public int GetMiningAmount(bool isSpecial)
+    {
+        DataManager dataManager = DataManager.Instance;
+
+        float baseAmount = isSpecial ? Mathf.Pow(level + dataManager.SLIME_LENGTH, dataManager.LEVEL_PER_MINING_INCREASE_AMOUNT) : 
+            Mathf.Pow(level, dataManager.LEVEL_PER_MINING_INCREASE_AMOUNT);
+        return Mathf.RoundToInt(baseAmount + baseAmount * dataManager.upgrades[1].amount / 100);
+    }
+    public float GetMiningCool(bool isSpecial)
+    {
+        DataManager dataManager = DataManager.Instance;
+
+        float reduceAmount = isSpecial ? dataManager.LEVEL_PER_MINING_REDUCE_COOLDOWN * dataManager.SPECIAL_MINING_COOLDOWN_INCEASE_AMOUNT
+            : dataManager.LEVEL_PER_MINING_REDUCE_COOLDOWN;
+
+        return dataManager.MAX_MINING_CYCLE - reduceAmount * level;
     }
 }
 

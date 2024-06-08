@@ -16,23 +16,23 @@ public class Mining : MonoBehaviour
 
     public void ReSet()
     {
-        maxMiningT = slime.dataManager.MINING_CYCLE - (slime.dataManager.MINING_CYCLE / (float)(slime.dataManager.SLIME_LENGTH * slime.level));
-
         StopAllCoroutines();
         StartCoroutine(MiningRoutine());
     }
 
-    private void SetAmount()
+    private void SetMining()
     {
-        int increase = slime.isSpecial ? slime.level + slime.dataManager.SLIME_LENGTH : slime.level;
-        miningAmount = (int)Mathf.Pow(increase, 3) + slime.dataManager.upgrades[1].amount;
+        SlimeData data = slime.dataManager.Find_SlimeData_level(slime.level, slime.isSpecial);
+
+        maxMiningT = data.GetMiningCool(slime.isSpecial);
+        miningAmount = data.GetMiningAmount(slime.isSpecial);
     }
 
     private IEnumerator MiningRoutine()
     {
         yield return new WaitForSeconds(maxMiningT);
 
-        SetAmount();
+        SetMining();
         slime.dataManager.coin.GainCoin(miningAmount);
         slime.spawnManager.SpawnMoneyTxt(slime.body.transform, miningAmount);
 
