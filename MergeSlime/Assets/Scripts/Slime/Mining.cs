@@ -24,8 +24,8 @@ public class Mining : MonoBehaviour
     {
         SlimeData data = slime.dataManager.Find_SlimeData_level(slime.level, slime.isSpecial);
 
-        maxMiningT = data.GetMiningCool(slime.isSpecial);
-        miningAmount = data.GetMiningAmount(slime.isSpecial);
+        maxMiningT = data.GetMiningCool();
+        miningAmount = data.GetMiningAmount();
     }
 
     private IEnumerator MiningRoutine()

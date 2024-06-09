@@ -81,4 +81,16 @@
 - 슬라임 로드하는 과정에서 수집 초기화되는 버그 수정<br/>
 - 업그레이드 로드 방식 최적화 (난이도 조정, 성능 ++)<br/>
 - 레벨 디자인 (마이닝 관련)<br/>
+
+<h3>[Test 0.9]</h3>
+<img src="https://github.com/HongDaHyun/MergeSlime/assets/101586627/0ce16da7-37a1-4118-b5bf-6026d35b551f" width="360" alt="Test 0.9">
+<br/>
+- 콜렉션 UI 생성<br/>
+- 기존 콜렉션 UI 생성<br/>
+- upgrades[0] 변경 (Luck -> Supply)<br/>
+- 최대 슬라임 수 제한<br/>
+- 콜렉션에 슬라임 추가 시 Luck 증가<br/>
+- SlimeData에 bool isSpecial 값 추가<br/>
+- 업그레이드 UI에서 다음 증가 폭을 확인할 수 있음<br/>
+- 투두리스트 추가<br/>
 </details>

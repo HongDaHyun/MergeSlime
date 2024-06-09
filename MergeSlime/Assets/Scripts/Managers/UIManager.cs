@@ -11,6 +11,7 @@ public class UIManager : Singleton<UIManager>
 {
     [Title("스크린"," ScreenCanvas에서 사용하는 UI")]
     public MoneyUI moneyUI;
+    public SpawnLimitUI spawnLimitUI;
 
     [Title("패널", "PannelCanvas에서 사용하는 UI")]
     public GameObject raycastPannel;
@@ -18,7 +19,8 @@ public class UIManager : Singleton<UIManager>
     [Title("인게임")]
     public RectTransform bgCanvas;
     public UpgradePannel[] upgradePannels;
-    public CollectionPannel collecionPannel;
+    public CollectionPannel collectionPannel;
+    public CollectionUI collectionUI;
 
     private void Start()
     {
@@ -33,6 +35,8 @@ public class UIManager : Singleton<UIManager>
         moneyUI.SetUI();
         for (int i = 0; i < upgradePannels.Length; i++)
             SetUpgradeUI(i);
+
+        collectionUI.SetUI();
     }
 
     public void SetUpgradeUI(int id)
@@ -42,24 +46,18 @@ public class UIManager : Singleton<UIManager>
         switch(id)
         {
             case 0:
-                upgradePannels[0].UpdateExplain($"Proc: <color=blue>{upgrade.amount}%</color>");
+                upgradePannels[0].UpdateExplain($"{upgrade.amount}<color=grey>(+{upgrade.NextAmountIncrease()})</color>");
+                spawnLimitUI.UpdateTxt();
                 break;
             case 1:
-                upgradePannels[id].UpdateExplain($"x{upgrade.amount}%");
+                upgradePannels[id].UpdateExplain($"x{upgrade.amount}<color=grey>(+{upgrade.NextAmountIncrease()})</color>%");
                 break;
             case 2:
-                upgradePannels[id].UpdateExplain($"+{upgrade.amount}");
+                upgradePannels[id].UpdateExplain($"{upgrade.amount}<color=grey>(+{upgrade.NextAmountIncrease()})</color>");
                 break;
         }
 
-        if (upgrade.level >= upgrade.levelLimit && upgrade.levelLimit != -1)
-        {
-            upgradePannels[id].btnTxt.text = "MAX";
-            upgradePannels[id].moneyTxt.text = $"<sprite=0> -";
-            return;
-        }
-
-        upgradePannels[id].UpdateUI(upgrade.level, upgrade.cost);
+        upgradePannels[id].UpdateButtonUI(upgrade.level, upgrade.cost);
     }
 }
 
@@ -89,12 +87,23 @@ public struct MoneyUI
 }
 
 [Serializable]
+public struct SpawnLimitUI
+{
+    public TextMeshProUGUI text;
+
+    public void UpdateTxt()
+    {
+        text.text = $"{SpawnManager.Instance.spawnCount}/{DataManager.Instance.upgrades[0].amount}";
+    }
+}
+
+[Serializable]
 public struct UpgradePannel
 {
     public Image icon;
     public TextMeshProUGUI nameTxt, explainTxt, btnTxt, moneyTxt;
 
-    public void UpdateUI(int level, int cost)
+    public void UpdateButtonUI(int level, int cost)
     {
         btnTxt.text = $"Level: {level}";
         moneyTxt.text = $"<sprite=0>{cost}";
@@ -120,21 +129,37 @@ public struct CollectionPannel
     public void SetPannel_NewCollection(int level, bool isSpecial)
     {
         DataManager dataManager = DataManager.Instance;
-        BtnManager.Instance.Tab(pannel);
+        BtnManager.Instance.Tab_NoRayCast(pannel);
 
         titleTxt.text = "New!!";
 
         SlimeData data = dataManager.Find_SlimeData_level(level, isSpecial);
 
+        SetPannel(data);
+    }
+
+    public void SetPannel_UsedCollection(int ID)
+    {
+        BtnManager.Instance.Tab_NoRayCast(pannel);
+
+        titleTxt.text = "Collect";
+
+        SlimeData data = DataManager.Instance.Find_SlimeData(ID);
+
+        SetPannel(data);
+    }
+
+    private void SetPannel(SlimeData data)
+    {
         bodyImg.sprite = data.sprite.bodySprite;
         faceImg.sprite = data.sprite.FindFace(Face.Idle);
 
         nameTxt.text = data.name;
         nameTxt.color = data.color;
         explainTxt.text = data.explain;
-        moneyTxt.text = $"{data.GetMiningAmount(isSpecial)}/{data.GetMiningCool(isSpecial)}sec";
+        moneyTxt.text = $"{data.GetMiningAmount()}/{data.GetMiningCool()}sec";
 
-        SetSpecial(isSpecial);
+        SetSpecial(data.isSpecial);
     }
 
     private void SetSpecial(bool isSpecial)
@@ -150,5 +175,43 @@ public struct CollectionPannel
         }
         else
             specialRect.gameObject.SetActive(false);
+    }
+}
+
+[Serializable]
+public struct CollectionUI
+{
+    public TextMeshProUGUI collectCountTxt;
+    public Slider collectSlider;
+    public TextMeshProUGUI sliderPercentTxt;
+    public TextMeshProUGUI luckPercentTxt;
+    public Transform collectionGrid;
+
+    public void SetUI()
+    {
+        SpawnManager.Instance.SpawnCollectPannels();
+
+        UpdateLuckSlider();
+    }
+
+    public void UpdateUI(int ID)
+    {
+        CollectPannel[] collectPannels = collectionGrid.GetComponentsInChildren<CollectPannel>(true);
+        Array.Find(collectPannels, item => item.ID == ID).UpdateCollectUI(DataManager.Instance.Find_SlimeData(ID));
+
+        UpdateLuckSlider();
+    }
+
+    private void UpdateLuckSlider()
+    {
+        DataManager dataManager = DataManager.Instance;
+        Luck luck = dataManager.luck;
+        float luckAmount = dataManager.luck.GetAmount();
+        float collectAmount = Mathf.Floor(luck.level / (float)(dataManager.SLIME_LENGTH + dataManager.SLIME_S_LENGTH) * 100f) / 100f;
+
+        collectCountTxt.text = $"Number of Collected: {luck.level}";
+        collectSlider.value = collectAmount;
+        sliderPercentTxt.text = $"{collectAmount * 100}%";
+        luckPercentTxt.text = $"Probability of Spawning Special Slime: <color=blue>{luckAmount * 100}%</color>";
     }
 }

@@ -99,7 +99,7 @@ public class Slime : MonoBehaviour, IPoolObject
         if (!isSave || isSpecial)
             return;
 
-        isSpecial = Random.Range(0, 100) < dataManager.upgrades[0].amount;
+        isSpecial = Random.Range(0, 100) < dataManager.luck.GetAmount();
         if (isSpecial)
             level = 1;
     }

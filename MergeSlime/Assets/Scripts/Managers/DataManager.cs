@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Sirenix.OdinInspector;
+using System.Linq;
 
 public class DataManager : Singleton<DataManager>
 {
     [Title("저장 변수")]
     public Coin coin;
+    public Luck luck;
     public int spawnPrice;
     public string lastConnect;
     public Upgrade[] upgrades;
@@ -18,6 +20,7 @@ public class DataManager : Singleton<DataManager>
     public float LEVEL_PER_MINING_INCREASE_AMOUNT; // 레벨 당 마이닝 증가량
     public float SPECIAL_MINING_COOLDOWN_INCEASE_AMOUNT; // 스페셜 슬라임 쿨다운 감소량의 증가배수 (~배 / ex. 2배, 2.5배 등)
     public int MAX_CONNECT_MINUTES; // 최대 접속 보상 시간
+    public float MAX_LUCK; // 최대 운 (0.7 -> 70%)
 
     [Title("중복 변수", "시작 시 자동 처리")]
     [ReadOnly] public int SLIME_LENGTH;
@@ -46,6 +49,7 @@ public class DataManager : Singleton<DataManager>
         SLIME_S_LENGTH = slimeDatas_S.Length;
 
         ConnectReward();
+        luck.UpdateLevel();
     }
 
     private void ConnectReward()
@@ -79,12 +83,30 @@ public class DataManager : Singleton<DataManager>
         ES3Manager.Instance.Save(SaveType.SpawnPrice);
     }
 
-    public SlimeData Find_SlimeData(int id, bool isSpecial)
+    public SlimeData Find_SlimeData(int id)
     {
-        if (isSpecial)
-            return Array.Find(slimeDatas_S, slime => slime.ID == id);
-        else
-            return Array.Find(slimeDatas, slime => slime.ID == id);
+        SlimeData slimeData = Array.Find(slimeDatas_S, slime => slime.ID == id);
+        if (slimeData != null)
+        {
+            return slimeData;
+        }
+        return Array.Find(slimeDatas, slime => slime.ID == id);
+    }
+    public ref SlimeData Find_SlimeData_Ref(int id)
+    {
+        int index = Array.FindIndex(slimeDatas_S, slime => slime.ID == id);
+        if (index != -1)
+        {
+            return ref slimeDatas_S[index];
+        }
+
+        index = Array.FindIndex(slimeDatas, slime => slime.ID == id);
+        if (index != -1)
+        {
+            return ref slimeDatas[index];
+        }
+
+        throw new KeyNotFoundException($"SlimeData with ID {id} not found.");
     }
     public SlimeData Find_SlimeData_level(int level, bool isSpecial)
     {
@@ -92,13 +114,6 @@ public class DataManager : Singleton<DataManager>
             return Array.Find(slimeDatas_S, slime => slime.level == level);
         else
             return Array.Find(slimeDatas, slime => slime.level == level);
-    }
-    public ref SlimeData Find_SlimeData_Ref(int id, bool isSpecial)
-    {
-        if (isSpecial)
-            return ref slimeDatas_S[Array.FindIndex(slimeDatas_S, slime => slime.ID == id)];
-        else
-            return ref slimeDatas[Array.FindIndex(slimeDatas, slime => slime.ID == id)];
     }
 }
 
@@ -145,7 +160,6 @@ public struct Upgrade
     public int level;
 
     [Title("난이도 변수")]
-    public int levelLimit; // -1이면 무한
     public int cost;
     public int amount;
     public int costIncrease;
@@ -153,11 +167,6 @@ public struct Upgrade
 
     public void UpLevel()
     {
-        DataManager dataManager = DataManager.Instance;
-
-        if ((level >= levelLimit && levelLimit != -1) || !dataManager.coin.LoseCoin(cost))
-            return;
-
         level++;
         SetCost();
         SetAmount();
@@ -172,6 +181,37 @@ public struct Upgrade
     {
         amount += amountIncrease * level;
     }
+
+    public int NextAmountIncrease()
+    {
+        return amountIncrease * (level + 1);
+    }
+}
+
+[Serializable]
+public struct Luck
+{
+    public int level; // 찾은 슬라임 수
+
+    public void UpdateLevel()
+    {
+        level = 0;
+
+        DataManager dataManager = DataManager.Instance;
+
+        foreach (SlimeData data in dataManager.slimeDatas)
+            if (data.isCollect)
+                level++;
+        foreach (SlimeData data in dataManager.slimeDatas_S)
+            if (data.isCollect)
+                level++;
+    }
+
+    public float GetAmount()
+    {
+        DataManager dataManager = DataManager.Instance;
+        return Mathf.Floor(dataManager.MAX_LUCK / (dataManager.SLIME_LENGTH + dataManager.SLIME_S_LENGTH) * level * 100f) / 100f;
+    }
 }
 
 [Serializable]
@@ -182,6 +222,7 @@ public class SlimeData
     public int level;
     public string name;
     public string explain;
+    [ReadOnly] public bool isSpecial;
     public Color color;
     public SlimeSprite sprite;
 
@@ -194,8 +235,12 @@ public class SlimeData
         if (isCollect)
             return;
 
+        UIManager uiManager = UIManager.Instance;
+
         isCollect = true;
-        UIManager.Instance.collecionPannel.SetPannel_NewCollection(level, false);
+        DataManager.Instance.luck.UpdateLevel();
+        uiManager.collectionPannel.SetPannel_NewCollection(level, isSpecial);
+        uiManager.collectionUI.UpdateUI(ID);
     }
 
     public void IncreaseSpawnCount()
@@ -207,7 +252,7 @@ public class SlimeData
         spawnCount--;
     }
 
-    public int GetMiningAmount(bool isSpecial)
+    public int GetMiningAmount()
     {
         DataManager dataManager = DataManager.Instance;
 
@@ -215,7 +260,7 @@ public class SlimeData
             Mathf.Pow(level, dataManager.LEVEL_PER_MINING_INCREASE_AMOUNT);
         return Mathf.RoundToInt(baseAmount + baseAmount * dataManager.upgrades[1].amount / 100);
     }
-    public float GetMiningCool(bool isSpecial)
+    public float GetMiningCool()
     {
         DataManager dataManager = DataManager.Instance;
 

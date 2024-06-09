@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 public class ES3Manager : Singleton<ES3Manager>
 {
@@ -70,15 +71,20 @@ public class ES3Manager : Singleton<ES3Manager>
 
         foreach (SlimeData data in loadDatas)
         {
-            dataManager.Find_SlimeData_Ref(data.ID, false).isCollect = data.isCollect;
+            dataManager.Find_SlimeData_Ref(data.ID).isCollect = data.isCollect;
+            dataManager.Find_SlimeData_Ref(data.ID).isSpecial = false;
             if (data.spawnCount > 0 && data.isCollect)
-                dataManager.Find_SlimeData_Ref(data.ID, false).spawnCount = data.spawnCount;
+                dataManager.Find_SlimeData_Ref(data.ID).spawnCount = data.spawnCount;
         }
         foreach (SlimeData data in loadDatas_S)
         {
-            dataManager.Find_SlimeData_Ref(data.ID, true).isCollect = data.isCollect;
+            dataManager.Find_SlimeData_Ref(data.ID).isCollect = data.isCollect;
+            dataManager.Find_SlimeData_Ref(data.ID).isSpecial = true;
             if (data.spawnCount > 0 && data.isCollect)
-                dataManager.Find_SlimeData_Ref(data.ID, true).spawnCount = data.spawnCount;
+                dataManager.Find_SlimeData_Ref(data.ID).spawnCount = data.spawnCount;
         }
+        // 레벨 기준 오름차순 정렬
+        Array.Sort(dataManager.slimeDatas, (x, y) => x.level.CompareTo(y.level));
+        Array.Sort(dataManager.slimeDatas_S, (x, y) => x.level.CompareTo(y.level));
     }
 }

@@ -9,6 +9,7 @@ public class SpawnManager : Singleton<SpawnManager>
 {
     public CameraBound camBound;
     public Transform border_L, border_R, border_T, border_B;
+    public int spawnCount;
 
     protected override void Awake()
     {
@@ -123,6 +124,8 @@ public class SpawnManager : Singleton<SpawnManager>
         slime.transform.position = vec2;
         slime.SetSlime(level, true);
         slime.expression.SetFace(Face.Cute, 1.5f);
+        spawnCount++;
+        UIManager.Instance.spawnLimitUI.UpdateTxt();
 
         SpawnPop(slime.transform);
 
@@ -135,6 +138,8 @@ public class SpawnManager : Singleton<SpawnManager>
         slime.transform.position = new Vector2(Random.Range(camBound.Left + 1, camBound.Right - 1), Random.Range(camBound.Bottom + 1, camBound.Top - 1));
         slime.SetSlime(level, true);
         slime.expression.SetFace(Face.Cute, 1.5f);
+        spawnCount++;
+        UIManager.Instance.spawnLimitUI.UpdateTxt();
 
         SpawnPop(slime.transform);
 
@@ -148,6 +153,8 @@ public class SpawnManager : Singleton<SpawnManager>
         slime.isSpecial = isSpecial;
         slime.SetSlime(level, false);
         slime.expression.SetFace(Face.Cute, 1.5f);
+        spawnCount++;
+        UIManager.Instance.spawnLimitUI.UpdateTxt();
 
         SpawnPop(slime.transform);
 
@@ -158,6 +165,30 @@ public class SpawnManager : Singleton<SpawnManager>
     {
         DataManager.Instance.Find_SlimeData_level(slime.level, slime.isSpecial).DecreaseSpawnCount();
         PoolManager.Instance.TakeToPool<Slime>(slime);
+
+        spawnCount--;
+        UIManager.Instance.spawnLimitUI.UpdateTxt();
+    }
+    #endregion
+
+    #region UI
+    public CollectPannel SpawnCollectPannel(SlimeData data)
+    {
+        CollectPannel collectPannel = PoolManager.Instance.GetFromPool<CollectPannel>("CollectPannel");
+
+        collectPannel.SetUI(data);
+
+        return collectPannel;
+    }
+
+    public void SpawnCollectPannels()
+    {
+        DataManager dataManager = DataManager.Instance;
+
+        foreach (SlimeData data in dataManager.slimeDatas)
+            SpawnCollectPannel(data);
+        foreach (SlimeData data in dataManager.slimeDatas_S)
+            SpawnCollectPannel(data);
     }
     #endregion
 

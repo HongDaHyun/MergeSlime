@@ -28,11 +28,32 @@ public class BtnManager : Singleton<BtnManager>
         }
     }
 
+    public void Tab_NoRayCast(RectTransform rect)
+    {
+        if (isTouching)
+            return;
+
+        if (!rect.gameObject.activeSelf)
+        {
+            rect.gameObject.SetActive(true);
+            rect.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+            rect.DOScale(new Vector3(1f, 1f, 1f), 0.5f).SetEase(Ease.InExpo).SetEase(Ease.OutBounce).SetUpdate(true);
+        }
+        else
+        {
+            rect.DOScale(new Vector3(0.05f, 0.05f, 0.05f), 0.25f).SetEase(Ease.InOutExpo).SetUpdate(true).OnComplete(() => rect.gameObject.SetActive(false));
+        }
+    }
+
     public void SpawnSlimeBtn()
     {
         DataManager dataManager = DataManager.Instance;
+
+        if (SpawnManager.Instance.spawnCount >= dataManager.upgrades[0].amount)
+            return;
         if (!dataManager.coin.LoseCoin(dataManager.spawnPrice))
             return;
+
         dataManager.SetPrice();
 
         SpawnManager.Instance.SpawnSlime(1);
