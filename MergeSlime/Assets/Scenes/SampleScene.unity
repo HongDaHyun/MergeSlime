@@ -3139,6 +3139,7 @@ MonoBehaviour:
     level: 1
     name: Aave
     explain: It's a very freewheeling slime.
+    isSpecial: 0
     color: {r: 0.49411768, g: 1, b: 1, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 662231d4e8e22a14b9ddbbf68367fdd0, type: 3}
@@ -3152,6 +3153,7 @@ MonoBehaviour:
     level: 2
     name: Sandbox
     explain: It's slime that enjoys sunbathing on the SANDy beach.
+    isSpecial: 0
     color: {r: 0.75294125, g: 1, b: 0.49411768, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 165fc2220df9f9142a1e29250e8d55e9, type: 3}
@@ -3165,6 +3167,7 @@ MonoBehaviour:
     level: 3
     name: ADA
     explain: It has a tremendous force(Pos).
+    isSpecial: 0
     color: {r: 0.48235297, g: 0.7254902, b: 0.9686275, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: dfc88e1ed7efc604fa69a32b2d2738d5, type: 3}
@@ -3178,6 +3181,7 @@ MonoBehaviour:
     level: 4
     name: Ripple
     explain: Originally, It had a higher position.
+    isSpecial: 0
     color: {r: 0.7490196, g: 0.49803925, b: 1, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: fa23602890391834c98e0f4c4edccbf5, type: 3}
@@ -3191,6 +3195,7 @@ MonoBehaviour:
     level: 5
     name: XEM
     explain: Yes! Yes! Yes!
+    isSpecial: 0
     color: {r: 0.9686275, g: 0.48235297, b: 0.48235297, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: afa5f5d8a0510cb4aa3ddefb62d99893, type: 3}
@@ -3204,6 +3209,7 @@ MonoBehaviour:
     level: 6
     name: Shiba-Inu
     explain: It's very cute and lovely.
+    isSpecial: 0
     color: {r: 1, g: 0.49803925, b: 0.7490196, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 843385891207f3a41862b5a04ebf71ba, type: 3}
@@ -3217,6 +3223,7 @@ MonoBehaviour:
     level: 7
     name: Doge
     explain: Let's go to Mars!
+    isSpecial: 0
     color: {r: 0.48235297, g: 0.9686275, b: 0.7254902, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 3f3ec05ca2ec85d40be3c0351fd19ab8, type: 3}
@@ -3230,6 +3237,7 @@ MonoBehaviour:
     level: 8
     name: Stacks
     explain: It hates hacker slime.
+    isSpecial: 0
     color: {r: 0.6431373, g: 0.6431373, b: 0.6431373, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: e3198d98716886743864ea112419230a, type: 3}
@@ -3243,6 +3251,7 @@ MonoBehaviour:
     level: 9
     name: Ton
     explain: How many tons do you think it is?
+    isSpecial: 0
     color: {r: 0.5294118, g: 0.7411765, b: 0.28235295, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 8d5fb795c67367a4cbffacb8780e7872, type: 3}
@@ -3256,6 +3265,7 @@ MonoBehaviour:
     level: 10
     name: Metadium
     explain: It could be a lizard, not a slime.
+    isSpecial: 0
     color: {r: 0, g: 0.5882353, b: 0.53333336, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 768eaf46e7b125546b31900d3c7fbf6a, type: 3}
@@ -3269,6 +3279,7 @@ MonoBehaviour:
     level: 11
     name: Golem
     explain: My Precious!
+    isSpecial: 0
     color: {r: 0.9686275, g: 0.8941177, b: 0.22352943, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 5b10be6f157fa0243b28aa0c146871bc, type: 3}
@@ -3282,6 +3293,7 @@ MonoBehaviour:
     level: 12
     name: Milk
     explain: Moooooooo.
+    isSpecial: 0
     color: {r: 1, g: 0.59607846, b: 0, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 784576cca35c50846b8dfb472ad8da46, type: 3}
@@ -3295,6 +3307,7 @@ MonoBehaviour:
     level: 13
     name: Waves
     explain: It's flexible, so it's good at yoga.
+    isSpecial: 0
     color: {r: 0.48627454, g: 0.24313727, b: 0, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 82f11a4e2831d13479cff9c90ac06d09, type: 3}
@@ -3308,6 +3321,7 @@ MonoBehaviour:
     level: 14
     name: Solana
     explain: Praise the sun!
+    isSpecial: 0
     color: {r: 1, g: 0.6784314, b: 0.6784314, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 13dc37e6a37a7e8409de82b5d6189084, type: 3}
@@ -3321,6 +3335,7 @@ MonoBehaviour:
     level: 15
     name: Chiliz
     explain: Red Hot Chili Peppers.
+    isSpecial: 0
     color: {r: 0.9686275, g: 0, b: 0, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 7680c3e944fee114bb3f4d05debd4e1f, type: 3}
@@ -3334,6 +3349,7 @@ MonoBehaviour:
     level: 16
     name: Axie-Infinity
     explain: It's slime with a lot of friends.
+    isSpecial: 0
     color: {r: 0.7411765, g: 0.96470594, b: 1, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 786b14457760c024ba34170ed1109f3f, type: 3}
@@ -3348,6 +3364,7 @@ MonoBehaviour:
     level: 1
     name: Not
     explain: Getting ready...
+    isSpecial: 0
     color: {r: 0.8588236, g: 0.65882355, b: 0.73333335, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 3e9dc6314ddc1fb4581701e0da7350a8, type: 3}
@@ -3361,6 +3378,7 @@ MonoBehaviour:
     level: 2
     name: Yet
     explain: Getting ready...
+    isSpecial: 0
     color: {r: 0.64705884, g: 0.121568635, b: 0.121568635, a: 1}
     sprite:
       bodySprite: {fileID: 21300000, guid: 73e12e554c227344686d96b4d9aacb02, type: 3}
@@ -3404,7 +3422,7 @@ RectTransform:
   - {fileID: 1281696035}
   - {fileID: 50789}
   m_Father: {fileID: 1596848450}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5164,7 +5182,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1227192563}
         m_TargetAssemblyTypeName: BtnManager, Assembly-CSharp
-        m_MethodName: Tab
+        m_MethodName: Tab_NoRayCast
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2146714420}
@@ -5599,6 +5617,18 @@ MonoBehaviour:
     Ordinal: 18
     Priority: 0
     IconType: 103000
+    IconTexture: {fileID: 0}
+    IsIconRecursive: 0
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
+  - Type: 0
+    Name: 
+    GameObject: {fileID: 2146714419}
+    Ordinal: 19
+    Priority: 0
+    IconType: 16000
     IconTexture: {fileID: 0}
     IsIconRecursive: 0
     BackgroundType: 0
@@ -7013,8 +7043,8 @@ RectTransform:
   m_Children:
   - {fileID: 2049259728}
   - {fileID: 756577118}
-  - {fileID: 2146714420}
   - {fileID: 675627662}
+  - {fileID: 2146714420}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8813,7 +8843,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.278, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9293,7 +9323,7 @@ RectTransform:
   - {fileID: 1153130888}
   - {fileID: 502435977}
   m_Father: {fileID: 1596848450}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
