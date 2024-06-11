@@ -3105,7 +3105,10 @@ MonoBehaviour:
     amount: 0
   luck:
     level: 0
-  spawnPrice: 0
+  spawnPrice:
+    spawnLevel: 0
+    DEFAULT_SPAWNPRICE: 5
+    INCREASE_SPAWNPRICE: 1.2
   lastConnect: 
   upgrades:
   - level: 0
@@ -3123,17 +3126,18 @@ MonoBehaviour:
     amount: 500
     costIncrease: 200
     amountIncrease: 1000
+  INCREASE_SPAWNPRICE: 1.2
   MAX_MINING_CYCLE: 7
   LEVEL_PER_MINING_REDUCE_COOLDOWN: 0.2
   LEVEL_PER_MINING_INCREASE_AMOUNT: 5
   SPECIAL_MINING_COOLDOWN_INCEASE_AMOUNT: 2
   MAX_CONNECT_MINUTES: 600
+  MIN_CONNECT_MINUTES: 10
   MAX_LUCK: 0.7
   SLIME_LENGTH: 0
   SLIME_S_LENGTH: 0
   SLIME_SCALE: 0.3
   DEFAULT_COIN: 500
-  DEFAULT_SPAWNPRICE: 5
   slimeDatas:
   - ID: 0
     level: 1
@@ -3388,6 +3392,9 @@ MonoBehaviour:
       - {fileID: 21300000, guid: 9df553d3e16c7cd4dac3e59344f29484, type: 3}
     isCollect: 0
     spawnCount: 0
+  spriteDatas:
+  - name: Coin
+    sprite: {fileID: 21300000, guid: 70c9dcf04e5dced4fbf8090e5106ed8b, type: 3}
 --- !u!1 &675627661
 GameObject:
   m_ObjectHideFlags: 0
@@ -5635,6 +5642,30 @@ MonoBehaviour:
     BackgroundTexture: {fileID: 0}
     IsBackgroundRecursive: 0
     IsHidden: 0
+  - Type: 0
+    Name: 
+    GameObject: {fileID: 0}
+    Ordinal: 20
+    Priority: 0
+    IconType: 168000
+    IconTexture: {fileID: 0}
+    IsIconRecursive: 0
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
+  - Type: 0
+    Name: 
+    GameObject: {fileID: 1174305437}
+    Ordinal: 21
+    Priority: 0
+    IconType: 168000
+    IconTexture: {fileID: 0}
+    IsIconRecursive: 0
+    BackgroundType: 0
+    BackgroundTexture: {fileID: 0}
+    IsBackgroundRecursive: 0
+    IsHidden: 0
 --- !u!4 &1171289762
 Transform:
   m_ObjectHideFlags: 0
@@ -5650,6 +5681,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1174305437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1174305438}
+  m_Layer: 5
+  m_Name: NoticeParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1174305438
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174305437}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1596848450}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -800}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1207419725
 GameObject:
   m_ObjectHideFlags: 0
@@ -6586,6 +6653,11 @@ MonoBehaviour:
     _count: 0
     _container: {fileID: 1656969192}
     _nonLazy: 0
+  - _name: NoticePannel
+    _component: {fileID: 6897254215464416000, guid: c828106b782c1be4dbf8516761577026, type: 3}
+    _count: 0
+    _container: {fileID: 1174305438}
+    _nonLazy: 0
 --- !u!1 &1374642974
 GameObject:
   m_ObjectHideFlags: 0
@@ -7044,6 +7116,7 @@ RectTransform:
   - {fileID: 2049259728}
   - {fileID: 756577118}
   - {fileID: 675627662}
+  - {fileID: 1174305438}
   - {fileID: 2146714420}
   m_Father: {fileID: 0}
   m_RootOrder: 9
@@ -9323,7 +9396,7 @@ RectTransform:
   - {fileID: 1153130888}
   - {fileID: 502435977}
   m_Father: {fileID: 1596848450}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

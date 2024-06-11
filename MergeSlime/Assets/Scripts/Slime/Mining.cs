@@ -33,7 +33,7 @@ public class Mining : MonoBehaviour
         yield return new WaitForSeconds(maxMiningT);
 
         SetMining();
-        slime.dataManager.coin.GainCoin(miningAmount);
+        slime.dataManager.coin.GainCoin((ulong)miningAmount);
         slime.spawnManager.SpawnMoneyTxt(slime.body.transform, miningAmount);
 
         StartCoroutine(MiningRoutine());

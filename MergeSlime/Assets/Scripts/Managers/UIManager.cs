@@ -37,6 +37,7 @@ public class UIManager : Singleton<UIManager>
             SetUpgradeUI(i);
 
         collectionUI.SetUI();
+        ConnectRewardUI();
     }
 
     public void SetUpgradeUI(int id)
@@ -59,6 +60,18 @@ public class UIManager : Singleton<UIManager>
 
         upgradePannels[id].UpdateButtonUI(upgrade.level, upgrade.cost);
     }
+
+    public void ConnectRewardUI()
+    {
+        DataManager dataManager = DataManager.Instance;
+
+        dataManager.lastConnect = "2024-06-10 21:30:06";
+
+        ulong reward = dataManager.ConnectReward();
+
+        if (reward > 0)
+            SpawnManager.Instance.SpawnNoticePannel("접속보상", "당신이 없는 동안 슬라임들이 돈을 벌어왔어요!", reward, dataManager.Find_Sprite("Coin"));
+    }
 }
 
 [Serializable]
@@ -72,15 +85,15 @@ public struct MoneyUI
         DataManager dataManager = DataManager.Instance;
 
         SetMoney(dataManager.coin.amount);
-        SetPrice(dataManager.spawnPrice);
+        SetPrice(dataManager.spawnPrice.GetPrice());
     }
 
-    public void SetMoney(int amount)
+    public void SetMoney(ulong amount)
     {
         coinTxt.text = $"<sprite=0>{amount}";
     }
 
-    public void SetPrice(int price)
+    public void SetPrice(ulong price)
     {
         priceTxt.text = $"<sprite=0>{price}";
     }

@@ -57,7 +57,7 @@ public class Movement : MonoBehaviour
         slime.SetSlime(slime.level, true);
         slime.expression.SetFace(Face.Surprise, 1.5f);
 
-        slime.dataManager.coin.GainCoin(slime.mining.miningAmount);
+        slime.dataManager.coin.GainCoin((ulong)slime.mining.miningAmount);
         slime.spawnManager.SpawnMoneyTxt(slime.body.transform, slime.mining.miningAmount);
     }
 

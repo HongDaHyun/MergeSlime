@@ -190,6 +190,20 @@ public class SpawnManager : Singleton<SpawnManager>
         foreach (SlimeData data in dataManager.slimeDatas_S)
             SpawnCollectPannel(data);
     }
+
+    public NoticePannel SpawnNoticePannel(string title, string explain, ulong reward, Sprite sprite)
+    {
+        NoticePannel noticePannel = PoolManager.Instance.GetFromPool<NoticePannel>("NoticePannel");
+
+        noticePannel.SetUI(title, explain, reward, sprite);
+
+        return noticePannel;
+    }
+
+    public void DeSpawnNoticePannel(NoticePannel pannel)
+    {
+        PoolManager.Instance.TakeToPool<NoticePannel>(pannel);
+    }
     #endregion
 
     #region VFX

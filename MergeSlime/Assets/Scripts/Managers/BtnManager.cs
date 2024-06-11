@@ -51,10 +51,10 @@ public class BtnManager : Singleton<BtnManager>
 
         if (SpawnManager.Instance.spawnCount >= dataManager.upgrades[0].amount)
             return;
-        if (!dataManager.coin.LoseCoin(dataManager.spawnPrice))
+        if (!dataManager.coin.LoseCoin(dataManager.spawnPrice.GetPrice()))
             return;
 
-        dataManager.SetPrice();
+        dataManager.spawnPrice.UpLevel();
 
         SpawnManager.Instance.SpawnSlime(1);
     }

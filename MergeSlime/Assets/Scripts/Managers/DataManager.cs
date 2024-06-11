@@ -10,16 +10,18 @@ public class DataManager : Singleton<DataManager>
     [Title("저장 변수")]
     public Coin coin;
     public Luck luck;
-    public int spawnPrice;
+    public SpawnPrice spawnPrice;
     public string lastConnect;
     public Upgrade[] upgrades;
 
     [Title("난이도 변수", "난이도 관련 조정 가능")]
+    public float INCREASE_SPAWNPRICE; // 스폰가격 증가폭 (~배 / ex. 1.2f -> 1.2배)
     public int MAX_MINING_CYCLE; // 최대 마이닝 쿨다운(레벨 1일 때)
     public float LEVEL_PER_MINING_REDUCE_COOLDOWN; // 레벨 당 쿨다운 감소량
     public float LEVEL_PER_MINING_INCREASE_AMOUNT; // 레벨 당 마이닝 증가량
     public float SPECIAL_MINING_COOLDOWN_INCEASE_AMOUNT; // 스페셜 슬라임 쿨다운 감소량의 증가배수 (~배 / ex. 2배, 2.5배 등)
     public int MAX_CONNECT_MINUTES; // 최대 접속 보상 시간
+    public int MIN_CONNECT_MINUTES; // 최소 접속 보상 시간
     public float MAX_LUCK; // 최대 운 (0.7 -> 70%)
 
     [Title("중복 변수", "시작 시 자동 처리")]
@@ -28,11 +30,14 @@ public class DataManager : Singleton<DataManager>
 
     [Title("기타 변수")]
     public float SLIME_SCALE;
-    public int DEFAULT_COIN; public int DEFAULT_SPAWNPRICE;
+    public ulong DEFAULT_COIN;
 
     [Title("슬라임 변수")]
     public SlimeData[] slimeDatas;
     public SlimeData[] slimeDatas_S;
+
+    [Title("스프라이트")]
+    public SpriteData[] spriteDatas;
 
     protected override void Awake()
     {
@@ -48,39 +53,36 @@ public class DataManager : Singleton<DataManager>
         SLIME_LENGTH = slimeDatas.Length;
         SLIME_S_LENGTH = slimeDatas_S.Length;
 
-        ConnectReward();
         luck.UpdateLevel();
     }
 
-    private void ConnectReward()
+    public ulong ConnectReward()
     {
         if (lastConnect == "")
         {
             SetLastConnect();
-            return;
+            return 0;
         }
 
         TimeSpan timespan = DateTime.Now - Convert.ToDateTime(lastConnect);
-
-        double proportion = Math.Min(1.0, timespan.TotalMinutes / MAX_CONNECT_MINUTES);
-
-        coin.GainCoin((int)(upgrades[2].amount * proportion));
+        double totalMin = timespan.TotalMinutes;
         SetLastConnect();
+
+        if (totalMin < MIN_CONNECT_MINUTES)
+            return 0;
+
+        double proportion = Math.Min(1.0, totalMin / MAX_CONNECT_MINUTES);
+        ulong reward = (ulong)(upgrades[2].amount * proportion);
+
+        coin.GainCoin(reward);
+
+        return reward;
     }
 
     private void SetLastConnect()
     {
         lastConnect = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         ES3Manager.Instance.Save(SaveType.LastConnect);
-    }
-
-    public void SetPrice()
-    {
-        int upPrice = Mathf.RoundToInt(spawnPrice * 1.2f);
-
-        spawnPrice = spawnPrice != upPrice ? upPrice : spawnPrice + 1;
-        UIManager.Instance.moneyUI.SetPrice(spawnPrice);
-        ES3Manager.Instance.Save(SaveType.SpawnPrice);
     }
 
     public SlimeData Find_SlimeData(int id)
@@ -115,6 +117,11 @@ public class DataManager : Singleton<DataManager>
         else
             return Array.Find(slimeDatas, slime => slime.level == level);
     }
+
+    public Sprite Find_Sprite(string name)
+    {
+        return Array.Find(spriteDatas, data => data.name == name).sprite;
+    }
 }
 
 [Serializable]
@@ -132,16 +139,16 @@ public struct SlimeSprite
 [Serializable]
 public struct Coin
 {
-    public int amount;
+    public ulong amount;
 
-    public void GainCoin(int _amount)
+    public void GainCoin(ulong _amount)
     {
         amount += _amount;
         UIManager.Instance.moneyUI.SetMoney(amount);
         ES3Manager.Instance.Save(SaveType.Coin);
     }
 
-    public bool LoseCoin(int _amount)
+    public bool LoseCoin(ulong _amount)
     {
         if (amount < _amount)
             return false;
@@ -150,6 +157,29 @@ public struct Coin
         UIManager.Instance.moneyUI.SetMoney(amount);
         ES3Manager.Instance.Save(SaveType.Coin);
         return true;
+    }
+}
+
+[Serializable]
+public struct SpawnPrice
+{
+    [Title("저장 데이터")]
+    public ulong spawnLevel;
+
+    [Title("난이도 데이터")]
+    public uint DEFAULT_SPAWNPRICE;
+    public float INCREASE_SPAWNPRICE;
+
+    public ulong GetPrice()
+    {
+        return (ulong)Mathf.RoundToInt(DEFAULT_SPAWNPRICE * Mathf.Pow(INCREASE_SPAWNPRICE, spawnLevel));
+    }
+
+    public void UpLevel()
+    {
+        spawnLevel++;
+        UIManager.Instance.moneyUI.SetPrice(GetPrice());
+        ES3Manager.Instance.Save(SaveType.SpawnLevel);
     }
 }
 
@@ -271,6 +301,13 @@ public class SlimeData
     }
 }
 
+[Serializable]
+public struct SpriteData
+{
+    public string name;
+    public Sprite sprite;
+}
+
 public enum State { Idle = 0, Pick, Merge }
 public enum Face { Cute, Idle, Surprise }
-public enum SaveType { Coin, SpawnPrice, LastConnect, Upgrades, SlimeData, SlimeData_S}
+public enum SaveType { Coin, SpawnLevel, LastConnect, Upgrades, SlimeData, SlimeData_S}

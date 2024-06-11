@@ -13,8 +13,8 @@ public class ES3Manager : Singleton<ES3Manager>
     {
         DataManager data = DataManager.Instance;
 
-        ES3.Save<int>(SaveType.Coin.ToString(), data.coin.amount, DATA_PATH);
-        ES3.Save<int>(SaveType.SpawnPrice.ToString(), data.spawnPrice, DATA_PATH);
+        ES3.Save<ulong>(SaveType.Coin.ToString(), data.coin.amount, DATA_PATH);
+        ES3.Save<ulong>(SaveType.SpawnLevel.ToString(), data.spawnPrice.spawnLevel, DATA_PATH);
         ES3.Save<string>(SaveType.LastConnect.ToString(), data.lastConnect, DATA_PATH);
         ES3.Save<Upgrade[]>(SaveType.Upgrades.ToString(), data.upgrades, DATA_PATH);
         ES3.Save<SlimeData[]>(SaveType.SlimeData.ToString(), data.slimeDatas, SLIME_PATH);
@@ -29,10 +29,10 @@ public class ES3Manager : Singleton<ES3Manager>
         switch (type)
         {
             case SaveType.Coin:
-                ES3.Save<int>(type_s, data.coin.amount, DATA_PATH);
+                ES3.Save<ulong>(type_s, data.coin.amount, DATA_PATH);
                 break;
-            case SaveType.SpawnPrice:
-                ES3.Save<int>(type_s, data.spawnPrice, DATA_PATH);
+            case SaveType.SpawnLevel:
+                ES3.Save<ulong>(type_s, data.spawnPrice.spawnLevel, DATA_PATH);
                 break;
             case SaveType.LastConnect:
                 ES3.Save<string>(type_s, data.lastConnect, DATA_PATH);
@@ -51,8 +51,8 @@ public class ES3Manager : Singleton<ES3Manager>
     {
         DataManager dataManager = DataManager.Instance;
 
-        dataManager.coin.amount = ES3.Load<int>(SaveType.Coin.ToString(), DATA_PATH, dataManager.DEFAULT_COIN);
-        dataManager.spawnPrice = ES3.Load<int>(SaveType.SpawnPrice.ToString(), DATA_PATH, dataManager.DEFAULT_SPAWNPRICE);
+        dataManager.coin.amount = ES3.Load<ulong>(SaveType.Coin.ToString(), DATA_PATH, dataManager.DEFAULT_COIN);
+        dataManager.spawnPrice.spawnLevel = ES3.Load<ulong>(SaveType.SpawnLevel.ToString(), DATA_PATH, 0);
         dataManager.lastConnect = ES3.Load<string>(SaveType.LastConnect.ToString(), DATA_PATH, "");
 
         Upgrade[] upgrades = ES3.Load<Upgrade[]>(SaveType.Upgrades.ToString(), DATA_PATH, dataManager.upgrades);
