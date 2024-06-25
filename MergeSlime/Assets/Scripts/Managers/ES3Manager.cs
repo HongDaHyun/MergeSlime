@@ -14,11 +14,12 @@ public class ES3Manager : Singleton<ES3Manager>
         DataManager data = DataManager.Instance;
 
         ES3.Save<ulong>(SaveType.Coin.ToString(), data.coin.amount, DATA_PATH);
-        ES3.Save<ulong>(SaveType.SpawnLevel.ToString(), data.spawnPrice.spawnLevel, DATA_PATH);
         ES3.Save<string>(SaveType.LastConnect.ToString(), data.lastConnect, DATA_PATH);
-        ES3.Save<Upgrade[]>(SaveType.Upgrades.ToString(), data.upgrades, DATA_PATH);
+        ES3.Save<Level[]>(SaveType.Level.ToString(), data.levels, DATA_PATH);
         ES3.Save<SlimeData[]>(SaveType.SlimeData.ToString(), data.slimeDatas, SLIME_PATH);
         ES3.Save<SlimeData[]>(SaveType.SlimeData_S.ToString(), data.slimeDatas_S, SLIME_PATH);
+        ES3.Save<MapData[]>(SaveType.Map.ToString(), data.mapDatas, DATA_PATH);
+        ES3.Save<int>(SaveType.MapID.ToString(), data.curMapID, DATA_PATH);
     }
     public void Save(SaveType type)
     {
@@ -31,18 +32,19 @@ public class ES3Manager : Singleton<ES3Manager>
             case SaveType.Coin:
                 ES3.Save<ulong>(type_s, data.coin.amount, DATA_PATH);
                 break;
-            case SaveType.SpawnLevel:
-                ES3.Save<ulong>(type_s, data.spawnPrice.spawnLevel, DATA_PATH);
-                break;
             case SaveType.LastConnect:
                 ES3.Save<string>(type_s, data.lastConnect, DATA_PATH);
-                break;
-            case SaveType.Upgrades:
-                ES3.Save<Upgrade[]>(type_s, data.upgrades, DATA_PATH);
                 break;
             case SaveType.SlimeData:
                 ES3.Save<SlimeData[]>(SaveType.SlimeData.ToString(), data.slimeDatas, SLIME_PATH);
                 ES3.Save<SlimeData[]>(SaveType.SlimeData_S.ToString(), data.slimeDatas_S, SLIME_PATH);
+                break;
+            case SaveType.Level:
+                ES3.Save<Level[]>(type_s, data.levels, DATA_PATH);
+                break;
+            case SaveType.Map:
+                ES3.Save<MapData[]>(SaveType.Map.ToString(), data.mapDatas, DATA_PATH);
+                ES3.Save<int>(SaveType.MapID.ToString(), data.curMapID, DATA_PATH);
                 break;
         }
     }
@@ -52,14 +54,30 @@ public class ES3Manager : Singleton<ES3Manager>
         DataManager dataManager = DataManager.Instance;
 
         dataManager.coin.amount = ES3.Load<ulong>(SaveType.Coin.ToString(), DATA_PATH, dataManager.DEFAULT_COIN);
-        dataManager.spawnPrice.spawnLevel = ES3.Load<ulong>(SaveType.SpawnLevel.ToString(), DATA_PATH, 0);
         dataManager.lastConnect = ES3.Load<string>(SaveType.LastConnect.ToString(), DATA_PATH, "");
+        dataManager.curMapID = ES3.Load<int>(SaveType.MapID.ToString(), DATA_PATH, 0);
 
-        Upgrade[] upgrades = ES3.Load<Upgrade[]>(SaveType.Upgrades.ToString(), DATA_PATH, dataManager.upgrades);
-        for (int i = 0; i < upgrades.Length; i++)
+        Level[] levels = ES3.Load<Level[]>(SaveType.Level.ToString(), DATA_PATH, dataManager.levels);
+        for(int i = 0; i < dataManager.levels.Length; i++)
         {
-            dataManager.upgrades[i].level = upgrades[i].level;
-            if(upgrades[i].level > 0)
+            if (levels[i] == null)
+                continue;
+            if (levels[i].level > 0)
+                dataManager.Find_Level_Ref(levels[i].type).level = levels[i].level;
+        }
+
+        MapData[] maps = ES3.Load<MapData[]>(SaveType.Map.ToString(), DATA_PATH, dataManager.mapDatas);
+        for (int i = 0; i < dataManager.mapDatas.Length; i++)
+        {
+            if (maps[i] == null)
+                continue;
+            if (maps[i].isCollect)
+                dataManager.SetCollect_MapData(maps[i].ID);
+        }
+
+        for (int i = 0; i < dataManager.upgrades.Length; i++)
+        {
+            if(dataManager.Find_Level(dataManager.upgrades[i].type) > 0)
             {
                 dataManager.upgrades[i].SetCost();
                 dataManager.upgrades[i].SetAmount();

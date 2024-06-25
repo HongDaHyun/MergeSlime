@@ -61,6 +61,11 @@ public class BtnManager : Singleton<BtnManager>
 
     public void UpgradeBtn(int id)
     {
+        DataManager dataManager = DataManager.Instance;
+
+        if (!dataManager.coin.LoseCoin((ulong)dataManager.upgrades[id].cost))
+            return;
+
         DataManager.Instance.upgrades[id].UpLevel();
         UIManager.Instance.SetUpgradeUI(id);
     }

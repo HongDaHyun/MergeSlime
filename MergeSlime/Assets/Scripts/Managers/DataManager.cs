@@ -9,10 +9,9 @@ public class DataManager : Singleton<DataManager>
 {
     [Title("저장 변수")]
     public Coin coin;
-    public Luck luck;
-    public SpawnPrice spawnPrice;
     public string lastConnect;
-    public Upgrade[] upgrades;
+    public Level[] levels;
+    public int curMapID;
 
     [Title("난이도 변수", "난이도 관련 조정 가능")]
     public float INCREASE_SPAWNPRICE; // 스폰가격 증가폭 (~배 / ex. 1.2f -> 1.2배)
@@ -23,6 +22,8 @@ public class DataManager : Singleton<DataManager>
     public int MAX_CONNECT_MINUTES; // 최대 접속 보상 시간
     public int MIN_CONNECT_MINUTES; // 최소 접속 보상 시간
     public float MAX_LUCK; // 최대 운 (0.7 -> 70%)
+    public Upgrade[] upgrades;
+    public SpawnPrice spawnPrice;
 
     [Title("중복 변수", "시작 시 자동 처리")]
     [ReadOnly] public int SLIME_LENGTH;
@@ -31,10 +32,14 @@ public class DataManager : Singleton<DataManager>
     [Title("기타 변수")]
     public float SLIME_SCALE;
     public ulong DEFAULT_COIN;
+    public Luck luck;
 
-    [Title("슬라임 변수")]
+    [Title("슬라임 데이터")]
     public SlimeData[] slimeDatas;
     public SlimeData[] slimeDatas_S;
+
+    [Title("맵 데이터")]
+    public MapData[] mapDatas;
 
     [Title("스프라이트")]
     public SpriteData[] spriteDatas;
@@ -58,7 +63,8 @@ public class DataManager : Singleton<DataManager>
 
     public ulong ConnectReward()
     {
-        if (lastConnect == "")
+        // 첫 접속
+        if (string.IsNullOrWhiteSpace(lastConnect))
         {
             SetLastConnect();
             return 0;
@@ -118,6 +124,24 @@ public class DataManager : Singleton<DataManager>
             return Array.Find(slimeDatas, slime => slime.level == level);
     }
 
+    public int Find_Level(LevelType type)
+    {
+        return Array.Find(levels, level => level.type == type).level;
+    }
+    public ref Level Find_Level_Ref(LevelType type)
+    {
+        return ref levels[Array.FindIndex(levels, level => level.type == type)];
+    }
+
+    public MapData Find_MapData(int ID)
+    {
+        return Array.Find(mapDatas, map => map.ID == ID);
+    }
+    public void SetCollect_MapData(int ID)
+    {
+        mapDatas[Array.FindIndex(mapDatas, map => map.ID == ID)].isCollect = true;
+    }
+
     public Sprite Find_Sprite(string name)
     {
         return Array.Find(spriteDatas, data => data.name == name).sprite;
@@ -163,33 +187,34 @@ public struct Coin
 [Serializable]
 public struct SpawnPrice
 {
-    [Title("저장 데이터")]
-    public ulong spawnLevel;
-
     [Title("난이도 데이터")]
     public uint DEFAULT_SPAWNPRICE;
     public float INCREASE_SPAWNPRICE;
 
     public ulong GetPrice()
     {
-        return (ulong)Mathf.RoundToInt(DEFAULT_SPAWNPRICE * Mathf.Pow(INCREASE_SPAWNPRICE, spawnLevel));
+        return (ulong)Mathf.RoundToInt(DEFAULT_SPAWNPRICE * Mathf.Pow(INCREASE_SPAWNPRICE, DataManager.Instance.Find_Level(LevelType.SpawnLv)));
     }
 
     public void UpLevel()
     {
-        spawnLevel++;
+        DataManager.Instance.Find_Level_Ref(LevelType.SpawnLv).level++;
         UIManager.Instance.moneyUI.SetPrice(GetPrice());
-        ES3Manager.Instance.Save(SaveType.SpawnLevel);
+        ES3Manager.Instance.Save(SaveType.Level);
     }
+}
+
+[Serializable]
+public class Level
+{
+    public LevelType type;
+    public int level;
 }
 
 [Serializable]
 public struct Upgrade
 {
-    [Title("저장 변수")]
-    public int level;
-
-    [Title("난이도 변수")]
+    public LevelType type;
     public int cost;
     public int amount;
     public int costIncrease;
@@ -197,50 +222,48 @@ public struct Upgrade
 
     public void UpLevel()
     {
-        level++;
+        DataManager.Instance.Find_Level_Ref(type).level++;
         SetCost();
         SetAmount();
-        ES3Manager.Instance.Save(SaveType.Upgrades);
+        ES3Manager.Instance.Save(SaveType.Level);
     }
 
     public void SetCost()
     {
-        cost += costIncrease * level;
+        cost += costIncrease * DataManager.Instance.Find_Level(type);
     }
     public void SetAmount()
     {
-        amount += amountIncrease * level;
+        amount += amountIncrease * DataManager.Instance.Find_Level(type);
     }
 
     public int NextAmountIncrease()
     {
-        return amountIncrease * (level + 1);
+        return amountIncrease * (DataManager.Instance.Find_Level(type) + 1);
     }
 }
 
 [Serializable]
 public struct Luck
 {
-    public int level; // 찾은 슬라임 수
-
     public void UpdateLevel()
     {
-        level = 0;
-
         DataManager dataManager = DataManager.Instance;
+
+        dataManager.Find_Level_Ref(LevelType.Luck).level = 0;
 
         foreach (SlimeData data in dataManager.slimeDatas)
             if (data.isCollect)
-                level++;
+                dataManager.Find_Level_Ref(LevelType.Luck).level++;
         foreach (SlimeData data in dataManager.slimeDatas_S)
             if (data.isCollect)
-                level++;
+                dataManager.Find_Level_Ref(LevelType.Luck).level++;
     }
 
     public float GetAmount()
     {
         DataManager dataManager = DataManager.Instance;
-        return Mathf.Floor(dataManager.MAX_LUCK / (dataManager.SLIME_LENGTH + dataManager.SLIME_S_LENGTH) * level * 100f) / 100f;
+        return Mathf.Floor(dataManager.MAX_LUCK / (dataManager.SLIME_LENGTH + dataManager.SLIME_S_LENGTH) * dataManager.Find_Level(LevelType.Luck) * 100f) / 100f;
     }
 }
 
@@ -302,6 +325,24 @@ public class SlimeData
 }
 
 [Serializable]
+public class MapData
+{
+    public int ID;
+    public string name;
+    public Map_Bonus[] mapBonuses;
+    public int cost;
+    public bool isCollect;
+    public Sprite mapSprite;
+}
+
+[Serializable]
+public struct Map_Bonus
+{
+    public LevelType type;
+    public int amount;
+}
+
+[Serializable]
 public struct SpriteData
 {
     public string name;
@@ -310,4 +351,5 @@ public struct SpriteData
 
 public enum State { Idle = 0, Pick, Merge }
 public enum Face { Cute, Idle, Surprise }
-public enum SaveType { Coin, SpawnLevel, LastConnect, Upgrades, SlimeData, SlimeData_S}
+public enum SaveType { Coin, LastConnect, SlimeData, SlimeData_S, Level, Map, MapID }
+public enum LevelType { Luck, Supply, Mining, Bank, SpawnLv }

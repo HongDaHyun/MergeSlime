@@ -17,15 +17,15 @@ public class UIManager : Singleton<UIManager>
     public GameObject raycastPannel;
 
     [Title("인게임")]
-    public RectTransform bgCanvas;
     public UpgradePannel[] upgradePannels;
     public CollectionPannel collectionPannel;
     public CollectionUI collectionUI;
+    public MapCollectionUI mapCollectionUI;
 
     private void Start()
     {
         CameraBound camBound = SpawnManager.Instance.camBound;
-        bgCanvas.sizeDelta = new Vector2(camBound.Width, camBound.Height);
+        mapCollectionUI.bgCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(camBound.Width, camBound.Height);
 
         SetUI();
     }
@@ -38,11 +38,14 @@ public class UIManager : Singleton<UIManager>
 
         collectionUI.SetUI();
         ConnectRewardUI();
+        mapCollectionUI.SetUI();
     }
 
     public void SetUpgradeUI(int id)
     {
-        Upgrade upgrade = DataManager.Instance.upgrades[id];
+        DataManager dataManager = DataManager.Instance;
+
+        Upgrade upgrade = dataManager.upgrades[id];
 
         switch(id)
         {
@@ -58,19 +61,17 @@ public class UIManager : Singleton<UIManager>
                 break;
         }
 
-        upgradePannels[id].UpdateButtonUI(upgrade.level, upgrade.cost);
+        upgradePannels[id].UpdateButtonUI(dataManager.Find_Level(upgrade.type), upgrade.cost);
     }
 
     public void ConnectRewardUI()
     {
         DataManager dataManager = DataManager.Instance;
 
-        dataManager.lastConnect = "2024-06-10 21:30:06";
-
         ulong reward = dataManager.ConnectReward();
 
         if (reward > 0)
-            SpawnManager.Instance.SpawnNoticePannel("접속보상", "당신이 없는 동안 슬라임들이 돈을 벌어왔어요!", reward, dataManager.Find_Sprite("Coin"));
+            SpawnManager.Instance.SpawnNoticePannel("Connect Reward", "The slimes have been making money while you were away!", reward, dataManager.Find_Sprite("Coin"));
     }
 }
 
@@ -218,13 +219,44 @@ public struct CollectionUI
     private void UpdateLuckSlider()
     {
         DataManager dataManager = DataManager.Instance;
-        Luck luck = dataManager.luck;
         float luckAmount = dataManager.luck.GetAmount();
-        float collectAmount = Mathf.Floor(luck.level / (float)(dataManager.SLIME_LENGTH + dataManager.SLIME_S_LENGTH) * 100f) / 100f;
+        float collectAmount = Mathf.Floor(dataManager.Find_Level(LevelType.Luck) / (float)(dataManager.SLIME_LENGTH + dataManager.SLIME_S_LENGTH) * 100f) / 100f;
 
-        collectCountTxt.text = $"Number of Collected: {luck.level}";
+        collectCountTxt.text = $"Number of Collected: {dataManager.Find_Level(LevelType.Luck)}";
         collectSlider.value = collectAmount;
         sliderPercentTxt.text = $"{collectAmount * 100}%";
         luckPercentTxt.text = $"Probability of Spawning Special Slime: <color=blue>{luckAmount * 100}%</color>";
+    }
+}
+
+[Serializable]
+public struct MapCollectionUI
+{
+    public Image bgCanvas;
+    public RectTransform contentRect;
+
+    public void SetUI()
+    {
+        DataManager dataManager = DataManager.Instance;
+
+        foreach (MapData data in dataManager.mapDatas)
+            SpawnManager.Instance.SpawnMapPannel(data.ID);
+
+        SetMapUI(dataManager.curMapID);
+    }
+
+    public void SetMapUI(int ID)
+    {
+        MapData data = DataManager.Instance.Find_MapData(ID);
+
+        bgCanvas.sprite = data.mapSprite;
+    }
+
+    public void UpdateAllPannel()
+    {
+        MapPannel[] pannels = contentRect.GetComponentsInChildren<MapPannel>();
+
+        foreach (MapPannel pannel in pannels)
+            pannel.UpdatePannel();
     }
 }

@@ -108,4 +108,13 @@
 - SpawnPrice 계산 공식 변경 (SpawnLevel 추가)<br/>
 - https://mergeslime.netlify.app<br/>
 
+<h3>[버전 0.2]</h3>
+<img src="https://github.com/HongDaHyun/MergeSlime/assets/101586627/2be0b08b-3262-4976-9465-2119c5affd77" width="360" alt="Beta 0.2">
+<br/>
+- 맵 변환 시스템 제작 (보너스 레벨 미완)<br/>
+- 맵 4종 추가<br/>
+- 맵 UI 제작<br/>
+- 레벨 관련 데이터 알고리즘 변환<br/>
+- 업그레이드 무료인 버그 수정<br/>
+
 </details>

@@ -180,7 +180,6 @@ public class SpawnManager : Singleton<SpawnManager>
 
         return collectPannel;
     }
-
     public void SpawnCollectPannels()
     {
         DataManager dataManager = DataManager.Instance;
@@ -191,6 +190,15 @@ public class SpawnManager : Singleton<SpawnManager>
             SpawnCollectPannel(data);
     }
 
+    public MapPannel SpawnMapPannel(int ID)
+    {
+        MapPannel mapPannel = PoolManager.Instance.GetFromPool<MapPannel>("MapPannel");
+
+        mapPannel.SetPannel(ID);
+
+        return mapPannel;
+    }
+
     public NoticePannel SpawnNoticePannel(string title, string explain, ulong reward, Sprite sprite)
     {
         NoticePannel noticePannel = PoolManager.Instance.GetFromPool<NoticePannel>("NoticePannel");
@@ -199,7 +207,6 @@ public class SpawnManager : Singleton<SpawnManager>
 
         return noticePannel;
     }
-
     public void DeSpawnNoticePannel(NoticePannel pannel)
     {
         PoolManager.Instance.TakeToPool<NoticePannel>(pannel);
