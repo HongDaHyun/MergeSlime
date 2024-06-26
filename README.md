@@ -117,7 +117,7 @@
 - 레벨 관련 데이터 알고리즘 변환<br/>
 - 업그레이드 무료인 버그 수정<br/>
 
-<h3>[버전 0.2]</h3>
+<h3>[버전 0.3]</h3>
 <img src="https://github.com/HongDaHyun/MergeSlime/assets/101586627/84b832a5-5f31-470b-bac1-970e08f713cb" width="360" alt="Beta 0.3">
 <br/>
 - 맵 보너스 효과 제작<br/>
