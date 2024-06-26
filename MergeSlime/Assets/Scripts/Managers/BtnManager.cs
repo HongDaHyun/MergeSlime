@@ -49,7 +49,7 @@ public class BtnManager : Singleton<BtnManager>
     {
         DataManager dataManager = DataManager.Instance;
 
-        if (SpawnManager.Instance.spawnCount >= dataManager.upgrades[0].amount)
+        if (SpawnManager.Instance.spawnCount >= dataManager.upgrades[0].GetAmount())
             return;
         if (!dataManager.coin.LoseCoin(dataManager.spawnPrice.GetPrice()))
             return;
@@ -63,7 +63,7 @@ public class BtnManager : Singleton<BtnManager>
     {
         DataManager dataManager = DataManager.Instance;
 
-        if (!dataManager.coin.LoseCoin((ulong)dataManager.upgrades[id].cost))
+        if (!dataManager.coin.LoseCoin((ulong)dataManager.upgrades[id].GetCost()))
             return;
 
         DataManager.Instance.upgrades[id].UpLevel();

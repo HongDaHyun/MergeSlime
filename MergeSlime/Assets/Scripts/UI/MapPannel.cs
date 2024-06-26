@@ -38,7 +38,7 @@ public class MapPannel : MonoBehaviour, IPoolObject
 
         titleTxt.text = data.name;
         explainTxt.text = data.mapBonuses.Length == 0 ? "None\n" : "";
-        foreach(Map_Bonus bonus in data.mapBonuses)
+        foreach(Bonus_Level bonus in data.mapBonuses)
         {
             explainTxt.text += bonus.amount >= 0 ? $"{bonus.type} <color=red>+ {bonus.amount}</color>\n" :
                 $"{bonus.type} <color=blue>- {-bonus.amount}</color>\n";
@@ -81,16 +81,21 @@ public class MapPannel : MonoBehaviour, IPoolObject
                 return;
             dataManager.SetCollect_MapData(ID);
             spawnManager.SpawnNoticePannel("New Map", $"{data.name} is UnLock!!", 0, dataManager.Find_Sprite("Rocket"));
+            dataManager.Up_BonusLevel(data.mapBonuses);
+
+            // UI
+            uiManager.mapCollectionUI.UpdateAllBonusUI();
+            uiManager.moneyUI.SetPrice(dataManager.spawnPrice.GetPrice());
+            uiManager.SetUpgradeUI_All();
         }
         // ¸Ê ¹Ù²Ù±â
         else
         {
             dataManager.curMapID = ID;
-
             uiManager.mapCollectionUI.SetMapUI(ID);
         }
 
-        uiManager.mapCollectionUI.UpdateAllPannel();
+        uiManager.mapCollectionUI.UpdateAllMapPannel();
         es3Manager.Save(SaveType.Map);
     }
 }

@@ -72,15 +72,9 @@ public class ES3Manager : Singleton<ES3Manager>
             if (maps[i] == null)
                 continue;
             if (maps[i].isCollect)
-                dataManager.SetCollect_MapData(maps[i].ID);
-        }
-
-        for (int i = 0; i < dataManager.upgrades.Length; i++)
-        {
-            if(dataManager.Find_Level(dataManager.upgrades[i].type) > 0)
             {
-                dataManager.upgrades[i].SetCost();
-                dataManager.upgrades[i].SetAmount();
+                dataManager.SetCollect_MapData(maps[i].ID);
+                dataManager.Up_BonusLevel(dataManager.mapDatas[i].mapBonuses);
             }
         }
 

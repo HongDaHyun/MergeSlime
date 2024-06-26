@@ -199,6 +199,15 @@ public class SpawnManager : Singleton<SpawnManager>
         return mapPannel;
     }
 
+    public MapBonusUI SpawnMapBonusUI(LevelType type)
+    {
+        MapBonusUI mapBonusUI = PoolManager.Instance.GetFromPool<MapBonusUI>("MapBonusUI");
+
+        mapBonusUI.SetUI(type);
+
+        return mapBonusUI;
+    }
+
     public NoticePannel SpawnNoticePannel(string title, string explain, ulong reward, Sprite sprite)
     {
         NoticePannel noticePannel = PoolManager.Instance.GetFromPool<NoticePannel>("NoticePannel");

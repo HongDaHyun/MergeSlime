@@ -33,14 +33,18 @@ public class UIManager : Singleton<UIManager>
     private void SetUI()
     {
         moneyUI.SetUI();
-        for (int i = 0; i < upgradePannels.Length; i++)
-            SetUpgradeUI(i);
+        SetUpgradeUI_All();
 
         collectionUI.SetUI();
         ConnectRewardUI();
         mapCollectionUI.SetUI();
     }
 
+    public void SetUpgradeUI_All()
+    {
+        for (int i = 0; i < upgradePannels.Length; i++)
+            SetUpgradeUI(i);
+    }
     public void SetUpgradeUI(int id)
     {
         DataManager dataManager = DataManager.Instance;
@@ -50,18 +54,18 @@ public class UIManager : Singleton<UIManager>
         switch(id)
         {
             case 0:
-                upgradePannels[0].UpdateExplain($"{upgrade.amount}<color=grey>(+{upgrade.NextAmountIncrease()})</color>");
+                upgradePannels[0].UpdateExplain($"{upgrade.GetAmount()}<color=grey>(+{upgrade.INCREASE_AMOUNT})</color>");
                 spawnLimitUI.UpdateTxt();
                 break;
             case 1:
-                upgradePannels[id].UpdateExplain($"x{upgrade.amount}<color=grey>(+{upgrade.NextAmountIncrease()})</color>%");
+                upgradePannels[id].UpdateExplain($"x{upgrade.GetAmount()}<color=grey>(+{upgrade.INCREASE_AMOUNT})</color>%");
                 break;
             case 2:
-                upgradePannels[id].UpdateExplain($"{upgrade.amount}<color=grey>(+{upgrade.NextAmountIncrease()})</color>");
+                upgradePannels[id].UpdateExplain($"{upgrade.GetAmount()}<color=grey>(+{upgrade.INCREASE_AMOUNT})</color>");
                 break;
         }
 
-        upgradePannels[id].UpdateButtonUI(dataManager.Find_Level(upgrade.type), upgrade.cost);
+        upgradePannels[id].UpdateButtonUI(dataManager.Find_Level(upgrade.type), dataManager.Find_BonusLevel(upgrade.type), upgrade.GetCost());
     }
 
     public void ConnectRewardUI()
@@ -107,7 +111,7 @@ public struct SpawnLimitUI
 
     public void UpdateTxt()
     {
-        text.text = $"{SpawnManager.Instance.spawnCount}/{DataManager.Instance.upgrades[0].amount}";
+        text.text = $"{SpawnManager.Instance.spawnCount}/{DataManager.Instance.upgrades[0].GetAmount()}";
     }
 }
 
@@ -117,9 +121,9 @@ public struct UpgradePannel
     public Image icon;
     public TextMeshProUGUI nameTxt, explainTxt, btnTxt, moneyTxt;
 
-    public void UpdateButtonUI(int level, int cost)
+    public void UpdateButtonUI(int level, int bonus, int cost)
     {
-        btnTxt.text = $"Level: {level}";
+        btnTxt.text = bonus > 0 ? $"Level: {level}<color=blue>(+{bonus})</color>" : $"Level: {level}";
         moneyTxt.text = $"<sprite=0>{cost}";
     }
 
@@ -234,13 +238,22 @@ public struct MapCollectionUI
 {
     public Image bgCanvas;
     public RectTransform contentRect;
+    public RectTransform bonusRect;
 
     public void SetUI()
     {
         DataManager dataManager = DataManager.Instance;
+        SpawnManager spawnManager = SpawnManager.Instance;
 
         foreach (MapData data in dataManager.mapDatas)
-            SpawnManager.Instance.SpawnMapPannel(data.ID);
+            spawnManager.SpawnMapPannel(data.ID);
+
+        foreach(Level lv in dataManager.levels)
+        {
+            if (lv.type == LevelType.Luck)
+                continue;
+            spawnManager.SpawnMapBonusUI(lv.type);
+        }
 
         SetMapUI(dataManager.curMapID);
     }
@@ -252,11 +265,19 @@ public struct MapCollectionUI
         bgCanvas.sprite = data.mapSprite;
     }
 
-    public void UpdateAllPannel()
+    public void UpdateAllMapPannel()
     {
         MapPannel[] pannels = contentRect.GetComponentsInChildren<MapPannel>();
 
         foreach (MapPannel pannel in pannels)
             pannel.UpdatePannel();
+    }
+
+    public void UpdateAllBonusUI()
+    {
+        MapBonusUI[] uis = bonusRect.GetComponentsInChildren<MapBonusUI>();
+
+        foreach (MapBonusUI ui in uis)
+            ui.UpdateText();
     }
 }

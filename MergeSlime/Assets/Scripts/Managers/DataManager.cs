@@ -78,7 +78,7 @@ public class DataManager : Singleton<DataManager>
             return 0;
 
         double proportion = Math.Min(1.0, totalMin / MAX_CONNECT_MINUTES);
-        ulong reward = (ulong)(upgrades[2].amount * proportion);
+        ulong reward = (ulong)(upgrades[2].GetAmount() * proportion);
 
         coin.GainCoin(reward);
 
@@ -128,9 +128,25 @@ public class DataManager : Singleton<DataManager>
     {
         return Array.Find(levels, level => level.type == type).level;
     }
+    public int Find_BonusLevel(LevelType type)
+    {
+        return Array.Find(levels, level => level.type == type).bonus;
+    }
     public ref Level Find_Level_Ref(LevelType type)
     {
         return ref levels[Array.FindIndex(levels, level => level.type == type)];
+    }
+    public void Up_BonusLevel(Bonus_Level[] bonus)
+    {
+        if (bonus == null)
+            return;
+        foreach (Bonus_Level data in bonus)
+            Find_Level_Ref(data.type).bonus += data.amount;
+    }
+    public void Reset_BonusLevel()
+    {
+        foreach (Level level in levels)
+            level.bonus = 0;
     }
 
     public MapData Find_MapData(int ID)
@@ -193,7 +209,9 @@ public struct SpawnPrice
 
     public ulong GetPrice()
     {
-        return (ulong)Mathf.RoundToInt(DEFAULT_SPAWNPRICE * Mathf.Pow(INCREASE_SPAWNPRICE, DataManager.Instance.Find_Level(LevelType.SpawnLv)));
+        DataManager dataManager = DataManager.Instance;
+
+        return (ulong)Mathf.RoundToInt(DEFAULT_SPAWNPRICE * Mathf.Pow(INCREASE_SPAWNPRICE, dataManager.Find_Level(LevelType.SpawnLv) + dataManager.Find_BonusLevel(LevelType.SpawnLv)));
     }
 
     public void UpLevel()
@@ -209,37 +227,33 @@ public class Level
 {
     public LevelType type;
     public int level;
+    public int bonus;
 }
 
 [Serializable]
 public struct Upgrade
 {
     public LevelType type;
-    public int cost;
-    public int amount;
-    public int costIncrease;
-    public int amountIncrease;
+    public int DEFAULT_COST;
+    public int DEFAULT_AMOUNT;
+    public float INCREASE_COST_F;
+    public int INCREASE_AMOUNT;
 
     public void UpLevel()
     {
         DataManager.Instance.Find_Level_Ref(type).level++;
-        SetCost();
-        SetAmount();
         ES3Manager.Instance.Save(SaveType.Level);
     }
 
-    public void SetCost()
+    public int GetCost()
     {
-        cost += costIncrease * DataManager.Instance.Find_Level(type);
+        return (int)Mathf.Max(DEFAULT_COST, DEFAULT_COST * INCREASE_COST_F * DataManager.Instance.Find_Level(type));
     }
-    public void SetAmount()
+    public int GetAmount()
     {
-        amount += amountIncrease * DataManager.Instance.Find_Level(type);
-    }
+        DataManager dataManager = DataManager.Instance;
 
-    public int NextAmountIncrease()
-    {
-        return amountIncrease * (DataManager.Instance.Find_Level(type) + 1);
+        return DEFAULT_AMOUNT + INCREASE_AMOUNT * (dataManager.Find_Level(type) + dataManager.Find_BonusLevel(type));
     }
 }
 
@@ -311,7 +325,7 @@ public class SlimeData
 
         float baseAmount = isSpecial ? Mathf.Pow(level + dataManager.SLIME_LENGTH, dataManager.LEVEL_PER_MINING_INCREASE_AMOUNT) : 
             Mathf.Pow(level, dataManager.LEVEL_PER_MINING_INCREASE_AMOUNT);
-        return Mathf.RoundToInt(baseAmount + baseAmount * dataManager.upgrades[1].amount / 100);
+        return Mathf.RoundToInt(baseAmount + baseAmount * dataManager.upgrades[1].GetAmount() / 100);
     }
     public float GetMiningCool()
     {
@@ -329,14 +343,14 @@ public class MapData
 {
     public int ID;
     public string name;
-    public Map_Bonus[] mapBonuses;
+    public Bonus_Level[] mapBonuses;
     public int cost;
     public bool isCollect;
     public Sprite mapSprite;
 }
 
 [Serializable]
-public struct Map_Bonus
+public struct Bonus_Level
 {
     public LevelType type;
     public int amount;
