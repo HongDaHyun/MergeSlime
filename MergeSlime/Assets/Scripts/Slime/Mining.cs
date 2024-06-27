@@ -30,7 +30,7 @@ public class Mining : MonoBehaviour
 
     private IEnumerator MiningRoutine()
     {
-        yield return new WaitForSeconds(maxMiningT);
+        yield return new WaitForSeconds(maxMiningT + Random.Range(-0.1f, 0.1f));
 
         SetMining();
         slime.dataManager.coin.GainCoin((ulong)miningAmount);

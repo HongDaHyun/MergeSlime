@@ -77,6 +77,22 @@ public class UIManager : Singleton<UIManager>
         if (reward > 0)
             SpawnManager.Instance.SpawnNoticePannel("Connect Reward", "The slimes have been making money while you were away!", reward, dataManager.Find_Sprite("Coin"));
     }
+
+    public string GetCoinUnit(ulong amount)
+    {
+        ulong amountBig = amount;
+        ulong amountSmall = 0;
+        char unitChar = 'a';
+
+        while (amountBig >= 1000)
+        {
+            amountSmall = amountBig % 1000;
+            amountBig /= 1000;
+            unitChar++;
+        }
+
+        return unitChar > 'a' ? $"{amountBig}.{amountSmall}{unitChar}" : $"{amountBig}{unitChar}";
+    }
 }
 
 [Serializable]
@@ -89,18 +105,18 @@ public struct MoneyUI
     {
         DataManager dataManager = DataManager.Instance;
 
-        SetMoney(dataManager.coin.amount);
+        SetMoney();
         SetPrice(dataManager.spawnPrice.GetPrice());
     }
 
-    public void SetMoney(ulong amount)
+    public void SetMoney()
     {
-        coinTxt.text = $"<sprite=0>{amount}";
+        coinTxt.text = $"<sprite=0>{UIManager.Instance.GetCoinUnit(DataManager.Instance.coin.amount)}";
     }
 
     public void SetPrice(ulong price)
     {
-        priceTxt.text = $"<sprite=0>{price}";
+        priceTxt.text = $"<sprite=0>{UIManager.Instance.GetCoinUnit(price)}";
     }
 }
 
@@ -121,10 +137,10 @@ public struct UpgradePannel
     public Image icon;
     public TextMeshProUGUI nameTxt, explainTxt, btnTxt, moneyTxt;
 
-    public void UpdateButtonUI(int level, int bonus, int cost)
+    public void UpdateButtonUI(int level, int bonus, ulong cost)
     {
         btnTxt.text = bonus > 0 ? $"Level: {level}<color=blue>(+{bonus})</color>" : $"Level: {level}";
-        moneyTxt.text = $"<sprite=0>{cost}";
+        moneyTxt.text = $"<sprite=0>{UIManager.Instance.GetCoinUnit(cost)}";
     }
 
     public void UpdateExplain(string explain)

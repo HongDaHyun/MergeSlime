@@ -184,7 +184,7 @@ public struct Coin
     public void GainCoin(ulong _amount)
     {
         amount += _amount;
-        UIManager.Instance.moneyUI.SetMoney(amount);
+        UIManager.Instance.moneyUI.SetMoney();
         ES3Manager.Instance.Save(SaveType.Coin);
     }
 
@@ -194,7 +194,7 @@ public struct Coin
             return false;
 
         amount -= _amount;
-        UIManager.Instance.moneyUI.SetMoney(amount);
+        UIManager.Instance.moneyUI.SetMoney();
         ES3Manager.Instance.Save(SaveType.Coin);
         return true;
     }
@@ -245,9 +245,9 @@ public struct Upgrade
         ES3Manager.Instance.Save(SaveType.Level);
     }
 
-    public int GetCost()
+    public ulong GetCost()
     {
-        return (int)Mathf.Max(DEFAULT_COST, DEFAULT_COST * INCREASE_COST_F * DataManager.Instance.Find_Level(type));
+        return (ulong)Mathf.Max(DEFAULT_COST, DEFAULT_COST * INCREASE_COST_F * DataManager.Instance.Find_Level(type));
     }
     public int GetAmount()
     {

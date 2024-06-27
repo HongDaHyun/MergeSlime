@@ -12,6 +12,7 @@ public class NoticePannel : MonoBehaviour, IPoolObject
     private float limitT, limitB;
 
     SpawnManager spawnManager;
+    UIManager uiManager;
 
     public Image iconImg;
     public TextMeshProUGUI titleTxt, explainTxt, rewardTxt;
@@ -19,6 +20,7 @@ public class NoticePannel : MonoBehaviour, IPoolObject
     public void OnCreatedInPool()
     {
         spawnManager = SpawnManager.Instance;
+        uiManager = UIManager.Instance;
 
         rect = GetComponent<RectTransform>();
 
@@ -38,7 +40,7 @@ public class NoticePannel : MonoBehaviour, IPoolObject
         explainTxt.text = explain;
 
         rewardTxt.gameObject.SetActive(reward > 0);
-        rewardTxt.text = $"<sprite=0>{reward}";
+        rewardTxt.text = $"<sprite=0>{uiManager.GetCoinUnit(reward)}";
     }
 
     private void SetLimit()

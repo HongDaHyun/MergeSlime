@@ -3528,6 +3528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coin:
+    UNIT: 1000
     amount: 0
   lastConnect: 
   levels:
